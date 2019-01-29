@@ -2,58 +2,7 @@
   <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-          <div class="post-preview">
-            <a href="post.html">
-              <h2 class="post-title">
-                Man must explore, and this is exploration at its greatest
-              </h2>
-              <h3 class="post-subtitle">
-                Problems look mighty small from 150 miles up
-              </h3>
-            </a>
-            <p class="post-meta">Posted by
-              <a href="#">Start Bootstrap</a>
-              on September 24, 2018</p>
-          </div>
-          <hr>
-          <div class="post-preview">
-            <a href="post.html">
-              <h2 class="post-title">
-                I believe every human has a finite number of heartbeats. I don't intend to waste any of mine.
-              </h2>
-            </a>
-            <p class="post-meta">Posted by
-              <a href="#">Start Bootstrap</a>
-              on September 18, 2018</p>
-          </div>
-          <hr>
-          <div class="post-preview">
-            <a href="post.html">
-              <h2 class="post-title">
-                Science has not yet mastered prophecy
-              </h2>
-              <h3 class="post-subtitle">
-                We predict too much for the next year and yet far too little for the next ten.
-              </h3>
-            </a>
-            <p class="post-meta">Posted by
-              <a href="#">Start Bootstrap</a>
-              on August 24, 2018</p>
-          </div>
-          <hr>
-          <div class="post-preview">
-            <a href="post.html">
-              <h2 class="post-title">
-                Failure is not an option
-              </h2>
-              <h3 class="post-subtitle">
-                Many say exploration is part of our destiny, but it’s actually our duty to future generations.
-              </h3>
-            </a>
-            <p class="post-meta">Posted by
-              <a href="#">Start Bootstrap</a>
-              on July 8, 2018</p>
-          </div>
+          <posts :posts="displayed_posts"></posts>
           <hr>
           <!-- Pager -->
           <div class="clearfix">
@@ -65,12 +14,77 @@
 </template>
 
 <script>
+import axios from 'axios'
+import moment from 'moment'
+import { mapState } from 'vuex'
+import Posts from './Posts.vue'
+import AccountAvatar from './AccountAvatar.vue'
+import AccountName from './AccountName.vue'
+
+import bus from '../bus.js'
+
 export default {
   name: 'hello',
-  data () {
+  data() {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      displayed_posts: [],
+      account_profiles: {},
+      moment: moment
     }
+  },
+  components: {
+    Posts,
+    AccountAvatar,
+    AccountName
+  },
+  computed: mapState({
+    account: 'account',
+    api_server: 'api_server',
+    last_broadcast: 'last_broadcast'
+  }),
+  watch: {
+    last_broadcast: function() {
+      setTimeout(this.update.bind(this), 10000)
+      this.$nextTick(() => {
+        this.quick_post_title = ''
+        this.quick_post_body = ''
+      })
+    }
+  },
+  methods: {
+    async update() {
+      await this.update_posts()
+    },
+    async update_posts() {
+      let response = await axios.get(`${this.api_server}/ipfs/posts.json?types=own_feed,other_feed&pagination=200`)
+      let posts = response.data.posts // display all for now
+      //await this.update_comments(posts);
+      this.displayed_posts = response.data.posts // display all for now
+    },
+    async quick_post() {
+      let tx = await create_post(
+        this.selected_account.address, 'own_feed',
+        this.quick_post_body, this.quick_post_title
+      )
+      this.$store.commit('sign_tx', {
+        'tx': tx,
+        'reason': 'New post on public timeline'
+      })
+    }
+  },
+  async created() {
+    // We may not have a correct account list yet... So wait a bit.
+    this.$nextTick(this.update.bind(this))
+    //setTimeout(this.update.bind(this), 500)
+    setInterval(this.update.bind(this), 30000)
+
+    bus.$on('broadcasted', () => {
+      setTimeout(this.update, 10000);
+      this.$nextTick(() => {
+        this.quick_post_title = ''
+        this.quick_post_body = ''
+      })
+    })
   }
 }
 </script>

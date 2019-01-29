@@ -14,16 +14,16 @@
              @hidden="$store.commit('signed_tx')">
       <sign v-if="signShow" :account="selected_account" :tx="signTx" :reason="signReason" @message-broadcasted="$store.commit('signed_tx')"></sign>
     </b-modal>
-    <b-navbar toggleable="md" id="mainNav" sticky="top">
-      <b-navbar-brand to="/">BlofApp</b-navbar-brand>
+    <b-navbar toggleable="md" id="mainNav">
+      <b-navbar-brand to="/">BlogApp</b-navbar-brand>
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
       <b-collapse is-nav id="nav_collapse">
 
-        <b-navbar-nav  class="ml-auto">
-          <b-nav-item v-if="!account" @click="login">Log-In</b-nav-item>
-          <b-nav-text v-if="account">Welcome {{account.name}}!</b-nav-text>
-          <b-nav-item v-if="account" @click="logout">Log-Out</b-nav-item>
+        <b-navbar-nav  class="ml-auto align-items-center">
+          <b-nav-item v-if="!account" @click="login" class="btn btn-secondary btn-sm ml-2">Log-In</b-nav-item>
+          <b-nav-text v-if="account"><account-name :address="account.address" /></b-nav-text>
+          <b-nav-item v-if="account" @click="logout" class="btn btn-secondary btn-sm ml-2">Log-Out</b-nav-item>
         </b-navbar-nav>
 
       </b-collapse>
@@ -34,6 +34,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import AccountName from './components/AccountName.vue'
 import Sign from './components/Sign.vue'
 
 
@@ -45,9 +46,8 @@ import {private_key_to_public_key,
 } from 'nulsworldjs/src/model/data.js'
 import {broadcast} from 'nulsworldjs/src/api/create'
 import {Transaction} from 'nulsworldjs/src/model/transaction'
+import {get_aliases} from 'nulsworldjs/src/api/aliases'
 
-var api_server = 'https://testnet.nuls.world'
-var network_id = 261
 
 var hexRegEx = /([0-9]|[a-f])/gim
 function isHex (input) {
@@ -68,10 +68,13 @@ export default {
     account: state => state.account,
     signShow: state => state.signShow,
     signTx: state => state.signTx,
-    signReason: state => state.signReason
+    signReason: state => state.signReason,
+    api_server: state => state.api_server,
+
   }),
   components: {
-    Sign
+    Sign,
+    AccountName
   },
   methods: {
     check_pkey() {
@@ -115,12 +118,18 @@ export default {
     },
     async logout() {
       this.$store.commit('set_account', null)
+    },
+    async update_aliases() {
+      let aliases = await get_aliases({api_server: this.api_server})
+      console.log(aliases)
+      this.$store.commit('set_aliases', aliases)
     }
   },
   mounted() {
     this.$nextTick(() => {
       if (this.account)
         this.warningShow = true
+      this.update_aliases()
     })
   },
 

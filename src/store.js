@@ -6,10 +6,12 @@ import bus from './bus.js'
 
 export default new Vuex.Store({
   state: {
+    api_server: 'https://nuls.world',
+    network_id: 8964,
     account: null,
     profiles: {},
-    aliases: {},
-    alias_addresses: {},
+    address_alias: {},
+    alias_address: {},
     signTx: null,
     signReason: null,
     signShow: false,
@@ -34,6 +36,16 @@ export default new Vuex.Store({
     },
     store_profile(state, payload) {
       state.profiles[payload.address] = payload.profile
+    },
+    set_aliases(state, aliases) {
+      let address_alias = {}
+      let alias_address = {}
+      for (let alias of aliases) {
+        address_alias[alias.address] = alias
+        alias_address[alias.alias] = alias
+      }
+      state.address_alias = address_alias
+      state.alias_address = alias_address
     },
     edit_profile(state) {
       state.editProfileShow = true

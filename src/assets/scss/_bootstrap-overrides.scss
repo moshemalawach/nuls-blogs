@@ -9,6 +9,16 @@
   @include sans-serif-font;
 }
 
+.btn-sm {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 10px 15px;
+
+  .nav-link {
+    padding: 0 !important;
+  }
+}
+
 .btn-primary {
   background-color: $primary;
   border-color: $primary;

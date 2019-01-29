@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Hello from '@/components/Hello'
-import Story from '@/components/Story'
+import StoryRead from '@/components/StoryRead'
 import Profile from '@/components/Profile'
+// import Organization from '@/components/Organization'
 
 Vue.use(Router)
 
@@ -20,9 +21,21 @@ export default new Router({
       props: true
     },
     {
-      path: '/@:alias/:slug',
-      name: 'Story',
-      component: Story,
+      path: '/a/@:address',
+      name: 'ProfileAddress',
+      component: Profile,
+      props: true
+    },
+    // {
+    //   path: '/o/:alias',
+    //   name: 'Organization',
+    //   component: Organization,
+    //   props: true
+    // },
+    {
+      path: '/s/:txhash',
+      name: 'StoryRead',
+      component: StoryRead,
       props: true
     }
   ]

@@ -8,6 +8,7 @@ import Notifications from 'vue-notification'
 import vSelect from 'vue-select'
 import store from './store'
 import { mapState } from 'vuex'
+import {fetch_profile} from 'nulsworldjs/src/api/aggregates'
 
 Vue.use(BootstrapVue)
 Vue.use(Notifications)
@@ -22,11 +23,13 @@ new Vue({
   template: '<App/>',
   components: { App },
   computed: mapState({
-    account: state => state.account
+    account: state => state.account,
+    api_server: state => state.api_server
   }),
   methods: {
     async fetch_profile(address) {
-      let profile = await fetch_profile(address)
+      console.log(address)
+      let profile = await fetch_profile(address, {api_server: this.api_server});
       this.$store.commit('store_profile', {
         address: address,
         profile: profile
