@@ -21,7 +21,6 @@ export default {
     profiles: state => state.profiles,
     address_alias: state => state.address_alias,
     target(state) {
-      console.log(state.address_alias)
       if (state.address_alias[this.address] !== undefined) {
         return { name: 'Profile', params: {'alias': state.address_alias[this.address].alias} }
       } else {

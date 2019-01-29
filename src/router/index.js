@@ -17,14 +17,12 @@ export default new Router({
     {
       path: '/@:alias',
       name: 'Profile',
-      component: Profile,
-      props: true
+      component: Profile
     },
     {
-      path: '/a/@:address',
+      path: '/a/:address',
       name: 'ProfileAddress',
-      component: Profile,
-      props: true
+      component: Profile
     },
     // {
     //   path: '/o/:alias',
