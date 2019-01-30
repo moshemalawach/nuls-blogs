@@ -25,7 +25,8 @@
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
             <b-button class="float-right"
-            :to="{name: 'StoryAmend', params: {txhash: transaction.hash}}">
+            :to="{name: 'StoryAmend', params: {txhash: transaction.hash}}"
+            v-if="account.address === transaction['inputs'][0]['address']">
               Edit
             </b-button>
             <vue-markdown :source="post.content.body"
@@ -119,7 +120,7 @@ import bus from '../bus.js'
           params: {
             'types': 'comment',
             'refs': this.transaction.hash,
-            'pagination': 200
+            'pagination': 1 // we only need the last modification
           }
         })
         let comments = response.data.posts
