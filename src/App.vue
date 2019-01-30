@@ -21,7 +21,7 @@
           <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
           <b-collapse is-nav id="nav_collapse">
             <b-navbar-nav  class="ml-auto align-items-center">
-              <b-nav-item v-if="!account" @click="login" class="btn btn-secondary btn-sm ml-2">Log-In</b-nav-item>
+              <b-nav-item v-if="!account" :to="{name: 'Login'}" class="btn btn-secondary btn-sm ml-2">Log-In</b-nav-item>
               <b-nav-text v-if="account">
                 <account-avatar :address="account.address"
                   linkclass="avatar-xs"
@@ -129,29 +129,6 @@ export default {
       } catch (e) {
         return false
       }
-    },
-    async login() {
-      this.private_key = prompt("Please enter your private key:")
-      if (!this.check_pkey()) {
-        alert("Private key is invalid.")
-        return
-      }
-      let prvbuffer = Buffer.from(this.private_key, 'hex')
-      let pub = private_key_to_public_key(prvbuffer)
-      let hash = public_key_to_hash(pub, {
-        chain_id: this.network_id
-      })
-      let address = address_from_hash(hash)
-      // Vue.set(this, 'public_key', pub);
-      let public_key = pub.toString('hex')
-      let address_hash = hash.toString('hex')
-      let account = {
-        'name': address,
-        'private_key': this.private_key,
-        'public_key': public_key,
-        'address': address
-      }
-      this.$store.commit('set_account', account)
     },
     async logout() {
       this.$store.commit('set_account', null)

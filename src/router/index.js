@@ -5,6 +5,7 @@ import StoryRead from '@/components/StoryRead'
 import Profile from '@/components/Profile'
 import EditProfile from '@/components/EditProfile'
 import Write from '@/components/Write'
+import Login from '@/components/Login'
 // import Organization from '@/components/Organization'
 
 Vue.use(Router)
@@ -54,6 +55,12 @@ export default new Router({
       path: '/write',
       name: 'Write',
       component: Write,
+      props: true
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login,
       props: true
     }
   ]
