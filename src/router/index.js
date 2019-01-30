@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Hello from '@/components/Hello'
 import StoryRead from '@/components/StoryRead'
 import Profile from '@/components/Profile'
+import Write from '@/components/Write'
 // import Organization from '@/components/Organization'
 
 Vue.use(Router)
@@ -34,6 +35,12 @@ export default new Router({
       path: '/s/:txhash',
       name: 'StoryRead',
       component: StoryRead,
+      props: true
+    },
+    {
+      path: '/write',
+      name: 'Write',
+      component: Write,
       props: true
     }
   ]
