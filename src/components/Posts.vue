@@ -1,19 +1,17 @@
 <template>
   <div class="post-list">
     <div v-for="post in posts"
+         v-if="post_amends[post.hash] ? post_amends[post.hash].content.title : post.content.title"
          v-bind:post="post"
          :key="post.hash + last_broadcast + Object.keys(profiles).length">
       <div class="post-preview">
         <router-link :to="{ name: 'StoryRead', params: {txhash: post.hash} }">
           <h2 class="post-title">
-            {{post.content.title}}
+            {{post_amends[post.hash] ? post_amends[post.hash].content.title : post.content.title}}
           </h2>
-          <h3 class="post-subtitle" v-if="post.content.subtitle">
-            {{post.content.subtitle}}
+          <h3 class="post-subtitle" v-if="post_amends[post.hash] ? post_amends[post.hash].content.subtitle : post.content.subtitle">
+            {{post_amends[post.hash] ? post_amends[post.hash].content.subtitle : post.content.subtitle}}
           </h3>
-          <p v-if="!post.content.title">
-            {{post.content.body}}
-          </p>
         </router-link>
         <p class="post-meta">Posted by
           <account-avatar :address="post.address"
@@ -53,6 +51,7 @@ export default {
     },
     async posts() {
       await this.update_profiles()
+      await this.update_amends()
       this.$forceUpdate()
     }
   },
@@ -65,7 +64,7 @@ export default {
     return {
       quick_post_body: "",
       moment: moment,
-      post_comments: {}
+      post_amends: {}
     }
   },
   methods: {
@@ -73,6 +72,25 @@ export default {
       for (let post of this.posts)
         if (this.profiles[post.address] === undefined)
           await this.$root.fetch_profile(post.address)
+    },
+    async update_amends() {
+      let post_amends = {}
+      const hashes = this.posts.map(x => x.hash);
+      let response = await axios.get(`${this.api_server}/ipfs/posts.json`, {
+        params: {
+          'types': 'amend',
+          'refs': hashes.join(','),
+          'pagination': 200 // let's hope this is enough...
+        }
+      })
+      let amends = response.data.posts;
+      amends.reverse()
+      for (let amend of amends) {
+        // we only keep the last one. let's hope it has all the fields...
+        post_amends[amend.ref] = amend;
+      }
+
+      this.post_amends = post_amends
     }
   },
   async mounted() {
