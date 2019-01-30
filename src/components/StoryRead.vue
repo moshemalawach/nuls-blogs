@@ -29,7 +29,7 @@
           <div class="col-lg-8 col-md-10 mx-auto">
             <b-button class="float-right"
             :to="{name: 'StoryAmend', params: {txhash: transaction.hash}}"
-            v-if="account.address === address">
+            v-if="account && (account.address === address)">
               Edit
             </b-button>
             <vue-markdown :source="post.content.body"
