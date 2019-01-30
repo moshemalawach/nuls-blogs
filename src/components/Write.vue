@@ -67,7 +67,12 @@
             </b-tabs>
             <hr />
             <div class="clearfix">
-              <b-button :variant="(title&&body) ? 'success' : 'danger'" class="float-right" @click="submit" :disabled="!(title&&body)">Submit</b-button>
+              <b-button :variant="(title&&body) ? 'success' : 'danger'" class="float-right" @click="submit" :disabled="(!(title&&body))||processing">
+                <div class="spinner-border text-light mr-3" role="status" v-if="processing">
+                  <span class="sr-only">Loading...</span>
+                </div>
+                Submit
+              </b-button>
             </div>
           </div>
         </div>
@@ -101,7 +106,8 @@ import router from '../router'
         title: '',
         subtitle: '',
         body: '',
-        moment: moment
+        moment: moment,
+        processing: false
       }
     },
     props: ['txhash'],
@@ -206,6 +212,13 @@ import router from '../router'
         tx.sign(Buffer.from(this.account.private_key, 'hex'))
         let signed_tx = tx.serialize().toString('hex')
         let tx_hash = await broadcast(signed_tx, {api_server: this.api_server})
+
+        this.processing = true
+        function sleep(ms) {
+          return new Promise(resolve => setTimeout(resolve, ms));
+        }
+        await sleep(10000)
+        this.processing = false
 
         if (this.txhash)
           router.push({ name: "StoryRead", params: {txhash: this.txhash} })
