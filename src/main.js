@@ -36,23 +36,23 @@ new Vue({
       })
     }
   },
-  watch: {
-    'account': {
-        handler() {
-          console.log('Account changed!');
-          localStorage.setItem('account', JSON.stringify(this.account));
-        },
-        deep: true,
-      },
-  },
-  mounted: function() {
-    try{
-      if (localStorage.getItem('account'))
-      {
-        this.$store.commit('set_account', JSON.parse(localStorage.getItem('account')))
-      }
-    } catch (e) {
-      console.warn("Can't import data", e);
-    }
-  },
+  // watch: {
+  //   'account': {
+  //       handler() {
+  //         console.log('Account changed!');
+  //         localStorage.setItem('account', JSON.stringify(this.account));
+  //       },
+  //       deep: true,
+  //     },
+  // },
+  // mounted: function() {
+  //   try{
+  //     if (localStorage.getItem('account'))
+  //     {
+  //       this.$store.commit('set_account', JSON.parse(localStorage.getItem('account')))
+  //     }
+  //   } catch (e) {
+  //     console.warn("Can't import data", e);
+  //   }
+  // },
 })

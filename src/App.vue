@@ -31,6 +31,29 @@
       </b-container>
     </div>
     <router-view></router-view>
+    <hr />
+    <footer>
+      <b-container>
+        <b-row>
+          <b-col lg="8" md="10" class="mx-auto">
+            <p class="copyright text-muted mt-0">
+              NULS Space is a dApp based on the NULS blockchain and the <a href="https://nuls.world">NULS.World</a> API.
+            </p>
+            <p class="copyright text-muted mt-0">
+              Currently on
+              <span v-if="network_id===261">
+                Test-Net.
+                <b-link @click="set_network(8964, 'https://nuls.world')">Switch</b-link>
+              </span>
+              <span v-if="network_id===8964">
+                Main-Net.
+                <b-link @click="set_network(261, 'https://testnet.nuls.world')">Switch</b-link>
+              </span>
+            </p>
+          </b-col>
+        </b-row>
+      </b-container>
+    </footer>
   </div>
 </template>
 
@@ -75,6 +98,11 @@ export default {
     network_id: state => state.network_id,
 
   }),
+  watch: {
+    async network_id() {
+      this.update_aliases()
+    }
+  },
   components: {
     Sign,
     AccountName
@@ -126,6 +154,14 @@ export default {
       let aliases = await get_aliases({api_server: this.api_server})
       console.log(aliases)
       this.$store.commit('set_aliases', aliases)
+    },
+    async set_network(network_id, api_server) {
+      this.$store.commit({
+        'type': 'set_network',
+        'network_id': network_id,
+        'api_server': api_server
+      })
+      this.$router.push('/')
     }
   },
   mounted() {

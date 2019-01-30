@@ -2,6 +2,12 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 Vue.use(Vuex)
 
+import VuexPersistence from 'vuex-persist'
+
+const vuexLocal = new VuexPersistence({
+  storage: window.localStorage
+})
+
 import bus from './bus.js'
 
 export default new Vuex.Store({
@@ -52,6 +58,15 @@ export default new Vuex.Store({
     },
     edited_profile(state) {
       state.editProfileShow = false
+    },
+    set_network(state, payload) {
+      state.network_id = payload.network_id
+      state.api_server = payload.api_server
+      state.profiles = {}
+      state.address_alias = {}
+      state.alias_address = {}
+      state.last_broadcast = null
     }
-  }
+  },
+  plugins: [vuexLocal.plugin]
 })
