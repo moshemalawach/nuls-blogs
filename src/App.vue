@@ -17,12 +17,16 @@
     <div id="mainNav">
       <b-container>
         <b-navbar toggleable="md">
-          <b-navbar-brand to="/">BlogApp</b-navbar-brand>
+          <b-navbar-brand to="/">NULS Space</b-navbar-brand>
           <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
           <b-collapse is-nav id="nav_collapse">
             <b-navbar-nav  class="ml-auto align-items-center">
               <b-nav-item v-if="!account" @click="login" class="btn btn-secondary btn-sm ml-2">Log-In</b-nav-item>
-              <b-nav-text v-if="account"><account-name :address="account.address" /></b-nav-text>
+              <b-nav-text v-if="account">
+                <account-avatar :address="account.address"
+                  linkclass="avatar-xs"
+                  imgclass="rounded-circle" />
+                  <account-name :address="account.address" /></b-nav-text>
               <b-nav-item v-if="account" :to="{name: 'Write'}" class="btn btn-primary btn-sm ml-2">Write</b-nav-item>
               <b-nav-item v-if="account" @click="logout" class="btn btn-secondary btn-sm ml-2">Log-Out</b-nav-item>
             </b-navbar-nav>
@@ -59,6 +63,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import AccountAvatar from './components/AccountAvatar.vue'
 import AccountName from './components/AccountName.vue'
 import Sign from './components/Sign.vue'
 
@@ -105,7 +110,8 @@ export default {
   },
   components: {
     Sign,
-    AccountName
+    AccountName,
+    AccountAvatar
   },
   methods: {
     check_pkey() {
