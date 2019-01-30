@@ -14,20 +14,22 @@
              @hidden="$store.commit('signed_tx')">
       <sign v-if="signShow" :account="selected_account" :tx="signTx" :reason="signReason" @message-broadcasted="$store.commit('signed_tx')"></sign>
     </b-modal>
-    <b-navbar toggleable="md" id="mainNav">
-      <b-navbar-brand to="/">BlogApp</b-navbar-brand>
-      <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-
-      <b-collapse is-nav id="nav_collapse">
-
-        <b-navbar-nav  class="ml-auto align-items-center">
-          <b-nav-item v-if="!account" @click="login" class="btn btn-secondary btn-sm ml-2">Log-In</b-nav-item>
-          <b-nav-text v-if="account"><account-name :address="account.address" /></b-nav-text>
-          <b-nav-item v-if="account" @click="logout" class="btn btn-secondary btn-sm ml-2">Log-Out</b-nav-item>
-        </b-navbar-nav>
-
-      </b-collapse>
-    </b-navbar>
+    <div id="mainNav">
+      <b-container>
+        <b-navbar toggleable="md">
+          <b-navbar-brand to="/">BlogApp</b-navbar-brand>
+          <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+          <b-collapse is-nav id="nav_collapse">
+            <b-navbar-nav  class="ml-auto align-items-center">
+              <b-nav-item v-if="!account" @click="login" class="btn btn-secondary btn-sm ml-2">Log-In</b-nav-item>
+              <b-nav-text v-if="account"><account-name :address="account.address" /></b-nav-text>
+              <b-nav-item v-if="account" :to="{name: 'Write'}" class="btn btn-primary btn-sm ml-2">Write</b-nav-item>
+              <b-nav-item v-if="account" @click="logout" class="btn btn-secondary btn-sm ml-2">Log-Out</b-nav-item>
+            </b-navbar-nav>
+          </b-collapse>
+        </b-navbar>
+      </b-container>
+    </div>
     <router-view></router-view>
   </div>
 </template>
@@ -70,6 +72,7 @@ export default {
     signTx: state => state.signTx,
     signReason: state => state.signReason,
     api_server: state => state.api_server,
+    network_id: state => state.network_id,
 
   }),
   components: {
@@ -102,7 +105,7 @@ export default {
       let prvbuffer = Buffer.from(this.private_key, 'hex')
       let pub = private_key_to_public_key(prvbuffer)
       let hash = public_key_to_hash(pub, {
-        chain_id: this.chain_id
+        chain_id: this.network_id
       })
       let address = address_from_hash(hash)
       // Vue.set(this, 'public_key', pub);
