@@ -10,13 +10,13 @@
                 <b-form-textarea v-model="title"
                   type="text"
                   placeholder="Enter a title"
-                  :rows="1"></b-form-textarea>
+                  :rows="Math.ceil(title.length/20)"></b-form-textarea>
               </h1>
               <h2 class="subheading">
                 <b-form-textarea v-model="subtitle"
                   type="text"
                   placeholder="subtitle"
-                  :rows="1"></b-form-textarea></h2>
+                  :rows="Math.ceil(subtitle.length/40)"></b-form-textarea></h2>
               <span class="meta" v-if="txhash">Posted by
                 <account-name :address="account.address"></account-name>
                 {{moment.unix(transaction.time/1000).fromNow()}},
@@ -54,7 +54,7 @@
                 <b-form-textarea id="textarea1"
                          v-model="body"
                          placeholder="Your post content"
-                         :rows="3"
+                         :rows="10"
                          :max-rows="20">
                 </b-form-textarea>
               </b-tab>
