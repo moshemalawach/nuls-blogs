@@ -31,10 +31,11 @@ header.masthead {
     h1 {
       font-size: 50px;
       margin-top: 0;
+      font-weight: 400;
     }
     .subheading {
       font-size: 24px;
-      font-weight: 300;
+      font-weight: 200;
       line-height: 1.1;
       display: block;
       margin: 10px 0 0;
@@ -57,6 +58,7 @@ header.masthead {
 
     h1 {
       font-size: 35px;
+      font-weight: 400;
     }
     .meta,
     .subheading {
@@ -65,7 +67,7 @@ header.masthead {
     }
     .subheading {
       font-size: 24px;
-      font-weight: 600;
+      font-weight: 200;
       margin: 10px 0 30px;
       @include sans-serif-font;
     }

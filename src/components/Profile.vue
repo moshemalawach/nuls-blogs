@@ -14,9 +14,9 @@
               imgclass="rounded-circle" />
           </div>
           <div class="flex-grow-1 order-0 mt-4 align-self-center">
-            <h1 v-if="profile.name">{{profile.name}}</h1>
-            <h1 v-else-if="alias">@{{alias}}</h1>
-            <h1 v-else>{{address}}</h1>
+            <h1 v-if="profile.name" class="display-4">{{profile.name}}</h1>
+            <h1 v-else-if="alias" class="display-4">@{{alias}}</h1>
+            <h1 v-else class="display-4">{{address}}</h1>
             <p v-if="profile.bio">{{profile.bio}}</p>
             <p v-else>Account with the address {{address}}</p>
           </div>
