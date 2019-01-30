@@ -9,7 +9,10 @@
               <h1>{{post.content.title||"Untitled"}}</h1>
               <h2 class="subheading" v-if="post.content.subtitle">{{post.content.subtitle}}</h2>
               <span class="meta">Posted by
-                <account-name :address="transaction['inputs'][0]['address']"></account-name>
+                 <account-avatar :address="address"
+                  linkclass="avatar-xs ml-2"
+                  imgclass="rounded-circle" />
+                <account-name :address="address"></account-name>
                 {{moment.unix(transaction.time/1000).fromNow()}}<span v-if="amends.length">,
                   updated
                   {{moment.unix(amends[amends.length-1].time/1000).fromNow()}}
@@ -26,7 +29,7 @@
           <div class="col-lg-8 col-md-10 mx-auto">
             <b-button class="float-right"
             :to="{name: 'StoryAmend', params: {txhash: transaction.hash}}"
-            v-if="account.address === transaction['inputs'][0]['address']">
+            v-if="account.address === address">
               Edit
             </b-button>
             <vue-markdown :source="post.content.body"
@@ -78,6 +81,10 @@ import bus from '../bus.js'
           post.content = post_content
         }
         return post
+      },
+      address() {
+        if (this.transaction)
+          return this.transaction['inputs'][0]['address']
       }
     }),
     components: {
