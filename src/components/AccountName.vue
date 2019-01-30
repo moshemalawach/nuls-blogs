@@ -1,13 +1,12 @@
 <template>
   <span>
     <router-link :to="target"
-       v-if="(profiles[address]) && (profiles[address].name)">
-       {{profiles[address].name}}
-    </router-link>
+       v-if="(profiles[address]) && (profiles[address].name)"
+       >{{profiles[address].name}}</router-link>
     <router-link :to="target"
-       v-else>
-       {{address}}
-    </router-link>
+       v-else-if="address_alias[address] !== undefined">@{{address_alias[address].alias}}</router-link>
+    <router-link :to="target"
+       v-else>{{address}}</router-link>
   </span>
 </template>
 
