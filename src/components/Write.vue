@@ -17,7 +17,11 @@
                   type="text"
                   placeholder="subtitle"
                   :rows="1"></b-form-textarea></h2>
-              <span class="meta">Posted by
+              <span class="meta" v-if="txhash">Posted by
+                <account-name :address="account.address"></account-name>
+                {{moment.unix(transaction.time/1000).fromNow()}},
+                  updated now.</span>
+              <span class="meta" v-else>Posted by
                 <account-name :address="account.address"></account-name>
                 now</span>
 
@@ -90,6 +94,7 @@ import router from '../router'
         profile: {},
         transaction: null,
         amends: [],
+        banner_file: null,
         banner_hash: null,
         title: '',
         subtitle: '',
@@ -108,7 +113,7 @@ import router from '../router'
           post = Object.assign({}, this.transaction.info.post)
         }
         if (this.amends.length) {
-          post_content = Object.assign({}, post.content)
+          let post_content = Object.assign({}, post.content)
           for (let amend of this.amends) {
             Object.assign(post_content, amend.content)
           }
@@ -182,7 +187,7 @@ import router from '../router'
         if (this.txhash)
           tx = await create_post(
             this.account.address, 'amend', this.body,
-            {title: this.title, ref:this.post.hash,
+            {title: this.title, ref: this.transaction.hash,
              misc_content: {
                subtitle: this.subtitle,
                banner: this.banner_hash

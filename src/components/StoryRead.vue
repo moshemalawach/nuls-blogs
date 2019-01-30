@@ -10,7 +10,11 @@
               <h2 class="subheading" v-if="post.content.subtitle">{{post.content.subtitle}}</h2>
               <span class="meta">Posted by
                 <account-name :address="transaction['inputs'][0]['address']"></account-name>
-                {{moment.unix(transaction.time/1000).fromNow()}}</span>
+                {{moment.unix(transaction.time/1000).fromNow()}}<span v-if="amends.length">,
+                  updated
+                  {{moment.unix(amends[amends.length-1].time/1000).fromNow()}}
+                </span>
+              </span>
             </div>
           </div>
         </div>
@@ -20,6 +24,10 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
+            <b-button class="float-right"
+            :to="{name: 'StoryAmend', params: {txhash: transaction.hash}}">
+              Edit
+            </b-button>
             <vue-markdown :source="post.content.body"
             :html="false" />
           </div>
@@ -62,7 +70,7 @@ import bus from '../bus.js'
           post = Object.assign({}, this.transaction.info.post)
         }
         if (this.amends.length) {
-          post_content = Object.assign({}, post.content)
+          let post_content = Object.assign({}, post.content)
           for (let amend of this.amends) {
             Object.assign(post_content, amend.content)
           }
@@ -105,28 +113,17 @@ import bus from '../bus.js'
         this.amends = response.data.posts
         this.amends.reverse()
       },
-      async getPosts() {
-        // own posts`
+      async getComments() {
+        // posts fron others on this wall
         let response = await axios.get('/ipfs/posts.json', {
           params: {
-            'types': 'own_feed',
-            'addresses': this.address,
+            'types': 'comment',
+            'refs': this.transaction.hash,
             'pagination': 200
           }
         })
-        let posts = response.data.posts
-
-        // posts fron others on this wall
-        response = await axios.get('/ipfs/posts.json', {
-          params: {
-            'types': 'other_feed',
-            'refs': this.address,
-            'pagination': 200
-          }
-        })
-        posts = posts.concat(response.data.posts)
+        let comments = response.data.posts
         posts.sort((a, b) => (b.time-a.time))
-        //await this.update_comments(posts);
 
         this.displayed_posts = posts // display all for now
       },

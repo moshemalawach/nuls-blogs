@@ -38,6 +38,12 @@ export default new Router({
       props: true
     },
     {
+      path: '/s/:txhash/amend',
+      name: 'StoryAmend',
+      component: Write,
+      props: true
+    },
+    {
       path: '/write',
       name: 'Write',
       component: Write,
