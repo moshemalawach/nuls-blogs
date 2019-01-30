@@ -1,15 +1,28 @@
 <template>
   <div class="container">
-    {{address}} {{alias}}
-    haha
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
-        <posts :posts="displayed_posts"></posts>
-        <hr>
-        <!-- Pager -->
-        <div class="clearfix">
-          <a class="btn btn-primary float-right" href="#">Older Posts →</a>
+        <div class="my-5 d-md-flex justify-content-between">
+          <div class="flex-shrink-1 order-1 col-md-4 col-lg-3 align-self-center">
+            <account-avatar :address="address"
+              linkclass="avatar-xxl"
+              imgclass="rounded-circle" />
+          </div>
+          <div class="flex-grow-1 order-0 mt-4 align-self-center">
+            <h1 v-if="profile.name">{{profile.name}}</h1>
+            <h1 v-else-if="alias">@{{alias}}</h1>
+            <h1 v-else>{{address}}</h1>
+            <p v-if="profile.bio">{{profile.bio}}</p>
+            <p v-else>Account with the address {{address}}</p>
+          </div>
         </div>
+        <b-tabs>
+          <b-tab title="Posts" active v-if="displayed_posts.length">
+            <posts :posts="displayed_posts"></posts>
+          </b-tab>
+          <!-- <b-tab title="Comments">
+          </b-tab> -->
+        </b-tabs>
       </div>
     </div>
   </div>
