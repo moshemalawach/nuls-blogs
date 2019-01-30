@@ -2,6 +2,11 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
+        <b-button class="float-right mt-5"
+        :to="{name: 'EditProfile', params: {address: address}}"
+        v-if="account.address === address">
+          Edit
+        </b-button>
         <div class="my-5 d-md-flex justify-content-between">
           <div class="flex-shrink-1 order-1 col-md-4 col-lg-3 align-self-center">
             <account-avatar :address="address"
