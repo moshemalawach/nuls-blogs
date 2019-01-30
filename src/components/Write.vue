@@ -10,13 +10,13 @@
                 <b-form-textarea v-model="title"
                   type="text"
                   placeholder="Enter a title"
-                  :rows="2"></b-form-textarea>
+                  :rows="1"></b-form-textarea>
               </h1>
               <h2 class="subheading">
                 <b-form-textarea v-model="subtitle"
                   type="text"
                   placeholder="subtitle"
-                  :rows="3"></b-form-textarea></h2>
+                  :rows="1"></b-form-textarea></h2>
               <span class="meta">Posted by
                 <account-name :address="account.address"></account-name>
                 now</span>

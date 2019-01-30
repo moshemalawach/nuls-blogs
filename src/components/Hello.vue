@@ -57,12 +57,11 @@ export default {
     last_broadcast: 'last_broadcast'
   }),
   watch: {
-    last_broadcast: function() {
+    last_broadcast() {
       setTimeout(this.update.bind(this), 10000)
-      this.$nextTick(() => {
-        this.quick_post_title = ''
-        this.quick_post_body = ''
-      })
+    },
+    async api_server() {
+      await this.update()
     }
   },
   methods: {
