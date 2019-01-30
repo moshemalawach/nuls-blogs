@@ -120,6 +120,7 @@ export default {
       if (profile !== null) {
         this.name = profile.name ? profile.name : ''
         this.bio = profile.bio ? profile.bio : ''
+        this.ppic_hash = profile.profile_picture ? profile.profile_picture : ''
       } else {
         this.name = ''
         this.bio = ''
