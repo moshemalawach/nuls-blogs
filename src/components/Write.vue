@@ -10,12 +10,13 @@
                 <b-form-textarea v-model="title"
                   type="text"
                   placeholder="Enter a title"
-                  :rows="Math.ceil(title.length/20)"></b-form-textarea>
+                  :rows="Math.ceil(title.length/20)"
+                  required></b-form-textarea>
               </h1>
               <h2 class="subheading">
                 <b-form-textarea v-model="subtitle"
                   type="text"
-                  placeholder="subtitle"
+                  placeholder="subtitle (optional)"
                   :rows="Math.ceil(subtitle.length/40)"></b-form-textarea></h2>
               <span class="meta" v-if="txhash">Posted by
                 <account-name :address="account.address"></account-name>
@@ -55,7 +56,8 @@
                          v-model="body"
                          placeholder="Your post content"
                          :rows="10"
-                         :max-rows="20">
+                         :max-rows="20"
+                         required>
                 </b-form-textarea>
               </b-tab>
               <b-tab title="Preview">
@@ -65,7 +67,7 @@
             </b-tabs>
             <hr />
             <div class="clearfix">
-              <b-button variant="primary" class="float-right" @click="submit">Submit</b-button>
+              <b-button :variant="(title&&body) ? 'success' : 'danger'" class="float-right" @click="submit" :disabled="!(title&&body)">Submit</b-button>
             </div>
           </div>
         </div>
