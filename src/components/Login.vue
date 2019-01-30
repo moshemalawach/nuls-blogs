@@ -296,7 +296,7 @@ export default {
         let prvbuffer = Buffer.from(this.private_key, 'hex')
         let pub = private_key_to_public_key(prvbuffer)
         let hash = public_key_to_hash(pub, {
-          chain_id: this.networks_id
+          chain_id: this.network_id
         })
         let address = address_from_hash(hash)
         // Vue.set(this, 'public_key', pub);
