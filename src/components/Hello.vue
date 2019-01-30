@@ -56,7 +56,7 @@ export default {
       await this.update_posts()
     },
     async update_posts() {
-      let response = await axios.get(`${this.api_server}/ipfs/posts.json?types=own_feed,other_feed&pagination=200`)
+      let response = await axios.get(`${this.api_server}/ipfs/posts.json?types=blog_pers,blog_org,own_feed,other_feed&pagination=200`)
       let posts = response.data.posts // display all for now
       //await this.update_comments(posts);
       this.displayed_posts = response.data.posts // display all for now

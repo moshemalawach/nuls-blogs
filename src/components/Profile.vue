@@ -79,7 +79,7 @@ import bus from '../bus.js'
         // own posts`
         let response = await axios.get(`${this.api_server}/ipfs/posts.json`, {
           params: {
-            'types': 'own_feed',
+            'types': 'blog_pers',
             'addresses': this.address,
             'pagination': 200
           }

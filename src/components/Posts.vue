@@ -1,23 +1,25 @@
 <template>
   <div class="post-list">
-    <div class="post-preview"
-         v-for="post in posts"
+    <div v-for="post in posts"
          v-bind:post="post"
          :key="post.hash + last_broadcast + Object.keys(profiles).length">
-      <router-link :to="{ name: 'StoryRead', params: {txhash: post.hash} }">
-        <h2 class="post-title">
-          {{post.content.title}}
-        </h2>
-        <h3 class="post-subtitle" v-if="post.content.subtitle">
-          {{post.content.subtitle}}
-        </h3>
-        <p v-if="!post.content.title">
-          {{post.content.body}}
-        </p>
-      </router-link>
-      <p class="post-meta">Posted by
-        <a href="#"><account-name :address="post.address"></account-name></a>
-        {{moment.unix(post.time/1000).fromNow()}}</p>
+      <div class="post-preview">
+        <router-link :to="{ name: 'StoryRead', params: {txhash: post.hash} }">
+          <h2 class="post-title">
+            {{post.content.title}}
+          </h2>
+          <h3 class="post-subtitle" v-if="post.content.subtitle">
+            {{post.content.subtitle}}
+          </h3>
+          <p v-if="!post.content.title">
+            {{post.content.body}}
+          </p>
+        </router-link>
+        <p class="post-meta">Posted by
+          <account-name :address="post.address"></account-name>
+          {{moment.unix(post.time/1000).fromNow()}}</p>
+      </div>
+      <hr />
     </div>
   </div>
 </template>
