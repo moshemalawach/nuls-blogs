@@ -47,6 +47,14 @@ header.masthead {
     }
   }
   .post-heading {
+
+    .form-control {
+      background: transparent;
+      border: 0;
+      font-size: inherit;
+      color: inherit;
+    }
+
     h1 {
       font-size: 35px;
     }

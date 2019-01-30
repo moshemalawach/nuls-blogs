@@ -1,9 +1,22 @@
 <template>
-  <div class="container">
+  <div>
+    <header class="masthead">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-md-10 mx-auto">
+            <div class="site-heading">
+              <h1>NULS Space</h1>
+              <span class="subheading">Your expression space, decentralized.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
           <posts :posts="displayed_posts"></posts>
-          <hr>
           <!-- Pager -->
           <div class="clearfix">
             <a class="btn btn-primary float-right" href="#">Older Posts →</a>
@@ -11,6 +24,7 @@
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -91,4 +105,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+header.masthead {
+  background-image: url('../assets/mast1.jpg');
+}
+.masthead .site-heading {
+  padding: 50px 0;
+}
 </style>
