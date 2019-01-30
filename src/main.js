@@ -9,6 +9,7 @@ import vSelect from 'vue-select'
 import store from './store'
 import { mapState } from 'vuex'
 import {fetch_profile} from 'nulsworldjs/src/api/aggregates'
+import i18n from './i18n/i18n'
 
 Vue.use(BootstrapVue)
 Vue.use(Notifications)
@@ -20,6 +21,7 @@ new Vue({
   el: '#app',
   store: store,
   router,
+  i18n,
   template: '<App/>',
   components: { App },
   computed: mapState({
