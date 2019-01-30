@@ -1,5 +1,5 @@
 <template>
-  <router-link v-bind:to="'/profile/' + address" :class="'avatar ' + linkclass">
+  <router-link v-bind:to="target" :class="'avatar ' + linkclass">
       <img :src="'https://ipfs.io/ipfs/' + profiles[address].profile_picture" alt="..." :class="'avatar-img ' + imgclass"
            v-if="(profiles[address]) && (profiles[address].profile_picture)">
       <img :src="'https://robohash.org/' + address + '?set=set1&bgset=bg1'"
@@ -14,7 +14,23 @@ export default {
   props: ['address', 'linkclass', 'imgclass', 'profile'],
   computed: mapState({
     accounts: state => state.accounts,
-    profiles: state => state.profiles
-  })
+    profiles: state => state.profiles,
+    address_alias: state => state.address_alias,
+    target(state) {
+      if (state.address_alias[this.address] !== undefined) {
+        return { name: 'Profile', params: {'alias': state.address_alias[this.address].alias} }
+      } else {
+        return { name: 'ProfileAddress', params: {'address': this.address} }
+      }
+    }
+  }),
+  watch: {
+    profiles() {
+      this.$forceUpdate();
+    },
+    address_alias() {
+      this.$forceUpdate();
+    }
+  }
 }
 </script>

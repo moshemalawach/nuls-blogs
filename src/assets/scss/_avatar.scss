@@ -1,0 +1,151 @@
+.avatar
+{
+    position: relative;
+    display: inline-block;
+    width: 3rem;
+    height: 3rem;
+
+    .rounded {
+      border-radius: 6px !important;
+    }
+
+    .avatar-title
+    {
+      font-size: 18px;
+    }
+}
+
+.avatar-img
+{
+    width: 100%;
+    height: 100%;
+
+    -o-object-fit: cover;
+       object-fit: cover;
+}
+
+.avatar-title
+{
+    display: flex;
+
+    width: 100%;
+    height: 100%;
+
+    color: #fff;
+    background-color: #b1c2d9;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar-xs
+{
+  width: 1.625rem;
+  height: 1.625rem;
+  .border
+  {
+      border-width: 2px !important;
+  }
+  .rounded
+  {
+      border-radius: 4px !important;
+  }
+  .avatar-title
+  {
+      font-size: 10px;
+  }
+}
+.avatar-sm
+{
+  width: 2.5rem;
+  height: 2.5rem;
+
+  .border
+  {
+      border-width: 3px !important;
+  }
+
+  .rounded
+  {
+      border-radius: 4px !important;
+  }
+
+  .avatar-title
+  {
+      font-size: 13px;
+  }
+}
+
+.avatar-lg
+{
+  width: 4rem;
+  height: 4rem;
+
+  .border
+  {
+      border-width: 3px !important;
+  }
+
+  .rounded
+  {
+      border-radius: 8px !important;
+  }
+
+  .avatar-title
+  {
+      font-size: 24px;
+  }
+}
+
+.avatar-xl
+{
+  width: 5.125rem;
+  height: 5.125rem;
+  .border
+  {
+    border-width: 4px !important;
+  }
+  .rounded
+  {
+    border-radius: 8px !important;
+  }
+  .avatar-title
+  {
+    font-size: 30px;
+  }
+}
+
+.avatar-xxl
+{
+  width: 5.125rem;
+  height: 5.125rem;
+  .border
+  {
+    border-width: 6px !important;
+  }
+  .rounded
+  {
+    border-radius: 8px !important;
+  }
+  .avatar-title
+  {
+    font-size: 30px;
+  }
+  @media (min-width: 768px)
+  {
+    width: 8rem;
+    height: 8rem;
+    .border
+    {
+      border-width: 4px !important;
+    }
+    .rounded
+    {
+      border-radius: 12px !important;
+    }
+    .avatar-title
+    {
+      font-size: 42px;
+    }
+  }
+}

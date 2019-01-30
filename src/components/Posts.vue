@@ -16,6 +16,9 @@
           </p>
         </router-link>
         <p class="post-meta">Posted by
+          <account-avatar :address="post.address"
+            linkclass="avatar-xs"
+            imgclass="rounded-circle" />
           <account-name :address="post.address"></account-name>
           {{moment.unix(post.time/1000).fromNow()}}</p>
       </div>
