@@ -29,9 +29,12 @@
                  imgclass="rounded-circle" />
     						<small class="ml-2">
                   <account-name :address="account.address" linkclass="text-dark"></account-name>
-                  <span class="text-muted d-block">
+                  <span class="text-muted d-block" v-if="transaction">
                     {{moment.unix(transaction.time/1000).fromNow()}},
                       updated now.
+                  </span>
+                  <span class="text-muted d-block" v-else>
+                    Just now
                   </span>
     						</small>
     					</div>
