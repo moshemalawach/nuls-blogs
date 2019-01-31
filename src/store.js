@@ -22,7 +22,13 @@ export default new Vuex.Store({
     signReason: null,
     signShow: false,
     editProfileShow: false,
-    last_broadcast: null
+    last_broadcast: null,
+    categories: [ // categories are hard-coded for now...
+      'Crypto',
+      'NULS',
+      'Tech',
+      'Design'
+    ]
   },
   mutations: {
     set_account(state, account) {

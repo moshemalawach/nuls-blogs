@@ -69,6 +69,8 @@ const en = {
     stake: 'Stake',
     regenerate: 'Re-generate',
     add_it: 'Add it',
+    login: 'Log-In',
+    logout: 'Log-Out',
 
     sign_transaction: 'Sign Transaction',
     broadcast_transaction: 'Broadcast Transaction',

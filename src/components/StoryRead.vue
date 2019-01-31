@@ -1,6 +1,6 @@
 <template>
-  <div class="articlepage">
-    <header class="masthead" :style="post.content.banner ? `background-image: url('https://ipfs.io/ipfs/${post.content.banner}')` : ''" v-if="post">
+  <div class="articlepage" ref="page">
+    <header class="masthead" :style="post.content.banner ? `background-image: url('https://ipfs.io/ipfs/${post.content.banner}')` : ''" v-if="post&&transaction">
       <div class="overlay"></div>
       <div class="container">
         <div class="row">
@@ -24,9 +24,18 @@
       </div>
     </header>
     <header class="masthead" v-else>
-      blah
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-md-10 mx-auto">
+            <div class="post-heading">
+              <h1>{{post.content.title||"Untitled"}}</h1>
+            </div>
+          </div>
+        </div>
+      </div>
     </header>
-    <article>
+    <article v-if="transaction">
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
@@ -123,7 +132,11 @@ import bus from '../bus.js'
     methods: {
       async getTransaction() {
         let response = await axios.get(`${this.api_server}/transactions/${this.txhash}.json`)
-        this.transaction = response.data.transaction
+        let transaction = response.data.transaction
+        if (transaction !== undefined)
+          this.transaction = transaction
+        else
+          this.transaction = null
       },
       async getProfile() {
         let address = this.$route.params.address
@@ -170,11 +183,13 @@ import bus from '../bus.js'
       async update() {
         let loader = this.$loading.show({
           // Optional parameters
+          container: this.$refs.page,
           loader: 'dots',
           opacity: .5
         });
-        if (this.txhash) {
+        if (this.txhash)
           await this.getTransaction()
+        if (this.transaction !== undefined) {
           await this.getProfile()
           await this.getAmends()
           await this.getComments()

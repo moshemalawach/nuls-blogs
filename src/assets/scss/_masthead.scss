@@ -4,7 +4,7 @@ header.masthead {
   margin-bottom: 50px;
   background: no-repeat center center;
   background-color: $gray-600;
-  background-attachment: scroll;
+  background-attachment: fixed;
   position: relative;
   @include background-cover;
   .overlay {

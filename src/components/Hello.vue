@@ -60,9 +60,6 @@ export default {
     last_broadcast: 'last_broadcast'
   }),
   watch: {
-    last_broadcast() {
-      setTimeout(this.update.bind(this), 10000)
-    },
     async api_server() {
       await this.update()
     },
@@ -101,19 +98,11 @@ export default {
       })
     }
   },
-  async created() {
+  async mounted() {
     // We may not have a correct account list yet... So wait a bit.
     this.$nextTick(this.update.bind(this))
     //setTimeout(this.update.bind(this), 500)
-    setInterval(this.update.bind(this), 30000)
-
-    bus.$on('broadcasted', () => {
-      setTimeout(this.update, 10000);
-      this.$nextTick(() => {
-        this.quick_post_title = ''
-        this.quick_post_body = ''
-      })
-    })
+    //setInterval(this.update.bind(this), 60000)
   }
 }
 </script>
