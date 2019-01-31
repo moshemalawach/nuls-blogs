@@ -214,6 +214,7 @@ import bus from '../bus.js'
           await this.getAmends()
           await this.getComments()
         }
+        this.$forceUpdate()
       },
       async quick_post() {
         this.posting = true
