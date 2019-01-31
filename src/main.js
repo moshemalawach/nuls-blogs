@@ -10,9 +10,14 @@ import store from './store'
 import { mapState } from 'vuex'
 import {fetch_profile} from 'nulsworldjs/src/api/aggregates'
 import i18n from './i18n/i18n'
+import Loading from 'vue-loading-overlay';
+
+// Import stylesheet
+import 'vue-loading-overlay/dist/vue-loading.css';
 
 Vue.use(BootstrapVue)
 Vue.use(Notifications)
+Vue.use(Loading);
 Vue.component('v-select', vSelect)
 Vue.config.productionTip = false
 

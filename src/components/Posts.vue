@@ -1,9 +1,9 @@
 <template>
-  <div class="post-list">
+  <div class="post-list" ref="list">
     <div v-for="post in posts"
          v-if="post_amends[post.hash] ? post_amends[post.hash].content.title : post.content.title"
          v-bind:post="post"
-         :key="post.hash + last_broadcast + Object.keys(profiles).length">
+         :key="post.hash + last_broadcast + Object.keys(profiles).length + Object.keys(post_amends).length">
       <div class="post-preview">
         <router-link :to="{ name: 'StoryRead', params: {txhash: post.hash} }">
           <h2 class="post-title">
@@ -47,12 +47,10 @@ export default {
     last_broadcast: async function() {
     },
     async profiles() {
-      this.$forceUpdate()
+      this.$forceUpdate();
     },
     async posts() {
-      await this.update_profiles()
-      await this.update_amends()
-      this.$forceUpdate()
+      await this.update();
     }
   },
   components: {
@@ -68,6 +66,18 @@ export default {
     }
   },
   methods: {
+    async update() {
+      let loader = this.$loading.show({
+        // Optional parameters
+        container: this.$refs.list,
+        loader: 'dots',
+        opacity: .9
+      });
+      await this.update_profiles()
+      await this.update_amends()
+      this.$forceUpdate()
+      loader.hide()
+    },
     async update_profiles() {
       for (let post of this.posts)
         if (this.profiles[post.address] === undefined)
@@ -76,6 +86,7 @@ export default {
     async update_amends() {
       let post_amends = {}
       const hashes = this.posts.map(x => x.hash);
+      console.log(hashes)
       let response = await axios.get(`${this.api_server}/ipfs/posts.json`, {
         params: {
           'types': 'amend',
@@ -94,11 +105,7 @@ export default {
     }
   },
   async mounted() {
-  },
-  async created() {
-    bus.$on('broadcasted', () => {
-      setTimeout(this.update_profiles, 10000)
-    })
+    await this.update();
   }
 }
 </script>

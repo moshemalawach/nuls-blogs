@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="articlepage">
     <header class="masthead" :style="post.content.banner ? `background-image: url('https://ipfs.io/ipfs/${post.content.banner}')` : ''" v-if="post">
       <div class="overlay"></div>
       <div class="container">
@@ -22,6 +22,9 @@
           </div>
         </div>
       </div>
+    </header>
+    <header class="masthead" v-else>
+      blah
     </header>
     <article>
       <div class="container">
@@ -154,36 +157,48 @@ import bus from '../bus.js'
             'pagination': 200
           }
         })
+        console.log(response.data.posts)
         let comments = response.data.posts
-        comments.sort((a, b) => (b.time-a.time))
 
-        for (let comments of comments)
-          if (this.profiles[comments.address] === undefined)
-            await this.$root.fetch_profile(comments.address)
+        for (let comment of comments)
+          if (this.profiles[comment.address] === undefined)
+            await this.$root.fetch_profile(comment.address)
+        console.log(2)
 
         this.comments = comments // display all for now
       },
-      async refresh() {
+      async update() {
+        let loader = this.$loading.show({
+          // Optional parameters
+          loader: 'dots',
+          opacity: .5
+        });
         if (this.txhash) {
           await this.getTransaction()
           await this.getProfile()
           await this.getAmends()
           await this.getComments()
         }
+        console.log(3)
+        loader.hide()
       }
     },
     watch: {
       async txhash() {
-        await this.refresh()
+        await this.update()
       }
     },
-    async created() {
-      await this.refresh()
+    async mounted() {
+      await this.update()
     }
   }
 </script>
 <style>
 header.masthead .post-heading {
   padding: 100px 0;
+}
+
+.articlepage {
+  min-height: 100%
 }
 </style>
