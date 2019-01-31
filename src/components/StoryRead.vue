@@ -198,13 +198,11 @@ import bus from '../bus.js'
             'pagination': 200
           }
         })
-        console.log(response.data.posts)
         let comments = response.data.posts
 
         for (let comment of comments)
           if (this.profiles[comment.address] === undefined)
             await this.$root.fetch_profile(comment.address)
-        console.log(2)
 
         this.comments = comments // display all for now
       },
@@ -222,7 +220,6 @@ import bus from '../bus.js'
           await this.getAmends()
           await this.getComments()
         }
-        console.log(3)
         loader.hide()
       },
       async quick_post() {
