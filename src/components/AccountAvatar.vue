@@ -13,7 +13,7 @@ export default {
   name: 'account-avatar',
   props: ['address', 'linkclass', 'imgclass', 'profile'],
   computed: mapState({
-    accounts: state => state.accounts,
+    account: state => state.account,
     profiles: state => state.profiles,
     address_alias: state => state.address_alias,
     target(state) {
