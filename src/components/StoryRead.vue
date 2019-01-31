@@ -34,6 +34,28 @@
             </b-button>
             <vue-markdown :source="post.content.body"
             :html="false" />
+            <hr>
+            <div v-if="comments">
+              <h4 class="my-5">{{comments.length}} thoughts on "{{post.content.title}}"</h4>
+              <div v-for="comment in comments"
+                   :key="post.hash + Object.keys(profiles).length">
+                 <div class="d-md-flex justify-content-between">
+                   <div class="flex-shrink-1">
+                     <account-avatar :address="comment.address"
+                       linkclass="avatar-lg"
+                       imgclass="rounded-circle" />
+                   </div>
+                   <div class="flex-grow-1 ml-4">
+                     <p class="my-0 text-muted float-right">{{moment.unix(comment.time/1000).fromNow()}}</p>
+                     <h5><account-name :address="comment.address"></account-name> says</h5>
+                     <vue-markdown :source="comment.content.body"
+                       :html="false" />
+                   </div>
+                 </div>
+                <hr />
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -60,12 +82,14 @@ import bus from '../bus.js'
         profile: {},
         transaction: null,
         amends: [],
-        moment: moment
+        moment: moment,
+        comments: []
       }
     },
     props: ['txhash'],
     computed: mapState({
       account: state => state.account,
+      profiles: state => state.profiles,
       api_server: state => state.api_server,
       last_broadcast: state => state.last_broadcast,
       post(state) {
@@ -115,7 +139,7 @@ import bus from '../bus.js'
             'types': 'amend',
             'addresses': this.address,
             'refs': this.txhash,
-            'pagination': 200
+            'pagination': 1 // we only need the last modification
           }
         })
         this.amends = response.data.posts
@@ -123,39 +147,38 @@ import bus from '../bus.js'
       },
       async getComments() {
         // posts fron others on this wall
-        let response = await axios.get('/ipfs/posts.json', {
+        let response = await axios.get(`${this.api_server}/ipfs/posts.json`, {
           params: {
             'types': 'comment',
             'refs': this.transaction.hash,
-            'pagination': 1 // we only need the last modification
+            'pagination': 200
           }
         })
         let comments = response.data.posts
-        posts.sort((a, b) => (b.time-a.time))
+        comments.sort((a, b) => (b.time-a.time))
 
-        this.displayed_posts = posts // display all for now
+        for (let comments of comments)
+          if (this.profiles[comments.address] === undefined)
+            await this.$root.fetch_profile(comments.address)
+
+        this.comments = comments // display all for now
       },
       async refresh() {
         if (this.txhash) {
           await this.getTransaction()
           await this.getProfile()
           await this.getAmends()
+          await this.getComments()
         }
       }
     },
     watch: {
       async txhash() {
-        await this.getTransaction()
-        await this.getProfile()
-        await this.getAmends()
+        await this.refresh()
       }
     },
     async created() {
       await this.refresh()
-      bus.$on('broadcasted', () => {
-        setTimeout(this.refresh, 5000);
-        setTimeout(this.refresh, 10000);
-      })
     }
   }
 </script>
