@@ -209,7 +209,7 @@ import bus from '../bus.js'
       async update() {
         if (this.txhash)
           await this.getTransaction()
-        if (this.transaction !== undefined) {
+        if (this.transaction) {
           await this.getProfile()
           await this.getAmends()
           await this.getComments()
