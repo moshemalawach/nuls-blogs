@@ -106,7 +106,7 @@
     					<div class="col-md-7">
     						<div class="row">
     							<div class="col-md-12 mt-2">
-    								<button to="/login" class="btn btn-success btn-block">Join Us!</button>
+    								<b-button to="/login" variant="success" class="btn-block">Join Us!</b-button>
     							</div>
     						</div>
     					</div>
