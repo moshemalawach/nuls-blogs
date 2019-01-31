@@ -207,12 +207,6 @@ import bus from '../bus.js'
         this.comments = comments // display all for now
       },
       async update() {
-        let loader = this.$loading.show({
-          // Optional parameters
-          container: this.$refs.page,
-          loader: 'dots',
-          opacity: .5
-        });
         if (this.txhash)
           await this.getTransaction()
         if (this.transaction !== undefined) {
@@ -220,7 +214,6 @@ import bus from '../bus.js'
           await this.getAmends()
           await this.getComments()
         }
-        loader.hide()
       },
       async quick_post() {
         this.posting = true

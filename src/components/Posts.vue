@@ -67,16 +67,9 @@ export default {
   },
   methods: {
     async update() {
-      let loader = this.$loading.show({
-        // Optional parameters
-        container: this.$refs.list,
-        loader: 'dots',
-        opacity: .9
-      });
       await this.update_profiles()
       await this.update_amends()
       this.$forceUpdate()
-      loader.hide()
     },
     async update_profiles() {
       for (let post of this.posts)
