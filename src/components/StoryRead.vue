@@ -1,44 +1,48 @@
 <template>
   <div class="articlepage" ref="page">
-    <header class="masthead" :style="post.content.banner ? `background-image: url('https://ipfs.io/ipfs/${post.content.banner}')` : ''" v-if="post&&transaction">
-      <div class="overlay"></div>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 col-md-10 mx-auto">
-            <div class="post-heading">
-              <h1>{{post.content.title||"Untitled"}}</h1>
-              <h2 class="subheading" v-if="post.content.subtitle">{{post.content.subtitle}}</h2>
-              <span class="meta">Posted by
-                 <account-avatar :address="address"
-                  linkclass="avatar-xs ml-2"
-                  imgclass="rounded-circle" />
-                <account-name :address="address"></account-name>
-                {{moment.unix(transaction.time/1000).fromNow()}}<span v-if="amends.length">,
-                  updated
-                  {{moment.unix(amends[amends.length-1].time/1000).fromNow()}}
-                </span>
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
-    <header class="masthead" v-else>
-      <div class="overlay"></div>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 col-md-10 mx-auto">
-            <div class="post-heading">
-              <h1>{{post.content.title||"Untitled"}}</h1>
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
-    <article v-if="transaction">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 col-md-10 mx-auto">
+    <div class="container">
+    	<div class="jumbotron jumbotron-fluid mb-3 pl-0 pt-0 pb-0 bg-white position-relative">
+    		<div class="h-100 tofront">
+    			<div class="row justify-content-between">
+    				<div class="col-md-6 pt-6 pb-6 pr-6 align-self-center">
+    					<!--<p class="text-uppercase font-weight-bold">
+    						<a class="text-danger" href="./category.html">Stories</a>
+    					</p>-->
+    					<h1 class="display-4 secondfont mb-3 font-weight-bold">{{post.content.title||"Untitled"}}</h1>
+    					<p class="mb-3">
+    						 {{post.content.subtitle}}
+    					</p>
+    					<div class="d-flex align-items-center">
+                <account-avatar :address="address"
+                 linkclass="avatar-lg ml-2"
+                 imgclass="rounded-circle" />
+    						<small class="ml-2">
+                  <account-name :address="address" linkclass="text-dark"></account-name>
+                  <span class="text-muted d-block">
+                    {{moment.unix(transaction.time/1000).fromNow()}}<span v-if="amends.length">,
+                      updated
+                      {{moment.unix(amends[amends.length-1].time/1000).fromNow()}}
+                    </span>
+                  </span>
+    						</small>
+    					</div>
+    				</div>
+    				<div class="col-md-6 pr-0" :style="post.content.banner ? `background-image: url('https://ipfs.io/ipfs/${post.content.banner}'); background-size: cover; background-position: center center;   background-repeat: no-repeat;` : ''"
+                 v-if="post&&transaction">
+    				</div>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+    <div class="container pt-4 pb-4">
+    	<div class="row justify-content-center">
+    		<div class="col-lg-2 pr-4 mb-4 col-md-12">
+    			<div class="sticky-top text-center">
+
+    			</div>
+    		</div>
+    		<div class="col-md-12 col-lg-8">
+    			<article class="article-post">
             <b-button class="float-right"
             :to="{name: 'StoryAmend', params: {txhash: transaction.hash}}"
             v-if="account && (account.address === address)">
@@ -46,57 +50,71 @@
             </b-button>
             <vue-markdown :source="post.content.body"
             :html="false" />
-            <hr v-if="comments.length">
-            <div v-if="comments.length">
-              <h4 class="my-5">{{comments.length}} thoughts on "{{post.content.title}}"</h4>
-              <div v-for="comment in comments"
-                   :key="post.hash + Object.keys(profiles).length">
-                 <div class="d-md-flex justify-content-between">
-                   <div class="flex-shrink-1">
-                     <account-avatar :address="comment.address"
-                       linkclass="avatar-lg"
-                       imgclass="rounded-circle" />
-                   </div>
-                   <div class="flex-grow-1 ml-4">
-                     <p class="my-0 text-muted float-right">{{moment.unix(comment.time/1000).fromNow()}}</p>
-                     <h5><account-name :address="comment.address"></account-name> says</h5>
-                     <vue-markdown :source="comment.content.body"
-                       :html="false" />
-                   </div>
-                 </div>
-                <hr />
-              </div>
-            </div>
+    			</article>
 
-            <hr v-if="(account!==null) && (!comments.length)">
-            <div class="d-md-flex justify-content-between" v-if="account!==null">
-              <div class="flex-shrink-1">
-                <!-- Avatar -->
-                <account-avatar :address="account.address" imgclass="rounded-circle"></account-avatar>
-              </div>
-              <div class="flex-grow-1 ml-4">
-                <p class="my-0 text-muted float-right">Just now</p>
-                <h5><account-name :address="account.address"></account-name> says</h5>
-                <b-form-textarea class="form-control" v-model="quick_post_body" placeholder="Leave a comment" rows="2"></b-form-textarea>
-              </div>
-            </div>
-            <div class="row align-items-center justify-content-between mt-2" v-if="quick_post_body">
-              <div class="col-auto">
-                <!-- more controls here like upload picture and things like that -->
-              </div>
-              <div class="col-auto">
-                <b-button variant="primary" size="sm" @click="quick_post" :disabled="posting">
-                  <div class="spinner-border text-light mr-3" role="status" v-if="posting">
-                    <span class="sr-only">Loading...</span>
-                  </div>
-                  Comment
-                </b-button>
-              </div>
+          <hr v-if="comments.length">
+          <div v-if="comments.length">
+            <h4 class="my-5">{{comments.length}} thoughts on "{{post.content.title}}"</h4>
+            <div v-for="comment in comments"
+                 :key="post.hash + Object.keys(profiles).length">
+               <div class="d-md-flex justify-content-between">
+                 <div class="flex-shrink-1">
+                   <account-avatar :address="comment.address"
+                     linkclass="avatar-lg"
+                     imgclass="rounded-circle" />
+                 </div>
+                 <div class="flex-grow-1 ml-4">
+                   <p class="my-0 text-muted float-right">{{moment.unix(comment.time/1000).fromNow()}}</p>
+                   <h5><account-name :address="comment.address" linkclass="text-dark"></account-name> says</h5>
+                   <vue-markdown :source="comment.content.body"
+                     :html="false" />
+                 </div>
+               </div>
+              <hr />
             </div>
           </div>
-        </div>
-      </div>
-    </article>
+
+          <hr v-if="(account!==null) && (!comments.length)">
+          <div class="d-md-flex justify-content-between" v-if="account!==null">
+            <div class="flex-shrink-1">
+              <!-- Avatar -->
+              <account-avatar :address="account.address" imgclass="rounded-circle"></account-avatar>
+            </div>
+            <div class="flex-grow-1 ml-4">
+              <p class="my-0 text-muted float-right">Just now</p>
+              <h5><account-name :address="account.address" linkclass="text-dark"></account-name> says</h5>
+              <b-form-textarea class="form-control form-inherit" v-model="quick_post_body" placeholder="Leave a comment" rows="2"></b-form-textarea>
+            </div>
+          </div>
+          <div class="row align-items-center justify-content-between mt-2" v-if="quick_post_body">
+            <div class="col-auto">
+              <!-- more controls here like upload picture and things like that -->
+            </div>
+            <div class="col-auto">
+              <b-button variant="primary" size="sm" @click="quick_post" :disabled="posting">
+                {{posting ? 'Please wait...' : 'Comment'}}
+              </b-button>
+            </div>
+          </div>
+
+    			<div class="border p-5" v-if="account===null">
+    				<div class="row justify-content-between">
+    					<div class="col-md-5 mb-2 mb-md-0">
+    						<h5 class="font-weight-bold secondfont">Become a member</h5>
+    						 You only need an address with at least 0.01 NULS in it.
+    					</div>
+    					<div class="col-md-7">
+    						<div class="row">
+    							<div class="col-md-12 mt-2">
+    								<button to="/login" class="btn btn-success btn-block">Join Us!</button>
+    							</div>
+    						</div>
+    					</div>
+    				</div>
+    			</div>
+    		</div>
+    	</div>
+    </div>
   </div>
 </template>
 

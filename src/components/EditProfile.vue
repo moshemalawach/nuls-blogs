@@ -15,6 +15,7 @@
                   <b-form-textarea v-model="name"
                   type="text"
                   placeholder="Name"
+                  class="form-inherit"
                   :rows="Math.ceil(name.length/30)"
                   :maxlength="100"
                   required></b-form-textarea>
@@ -22,6 +23,7 @@
                 <p>
                   <b-form-textarea v-model="bio"
                   type="text"
+                  class="form-inherit"
                   placeholder="Your bio..."
                   :rows="Math.ceil(bio.length/50)"></b-form-textarea>
                 </p>
@@ -46,10 +48,7 @@
                  Costs 0.001 <i class="nuls"></i>
               </b-form-text>
               <b-button :variant="(name) ? 'success' : 'danger'" @click="save" :disabled="(!name)||processing">
-                <div class="spinner-border text-light mr-3" role="status" v-if="processing">
-                  <span class="sr-only">Loading...</span>
-                </div>
-                Save
+                {{processing ? 'Please wait...' : 'Save'}}
               </b-button>
             </div>
           </div>

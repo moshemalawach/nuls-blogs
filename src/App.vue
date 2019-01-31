@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div>
     <notifications group="wallet" />
     <notifications group="blog" />
     <b-modal ref="warningModal" hide-footer title="Warning" v-model="warningShow">
@@ -14,50 +14,50 @@
              @hidden="$store.commit('signed_tx')">
       <sign v-if="signShow" :account="selected_account" :tx="signTx" :reason="signReason" @message-broadcasted="$store.commit('signed_tx')"></sign>
     </b-modal>
-    <div id="mainNav">
-      <b-container>
-        <b-navbar toggleable="md">
-          <b-navbar-brand to="/">NULS Space</b-navbar-brand>
-          <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-          <b-collapse is-nav id="nav_collapse">
-            <b-navbar-nav  class="ml-auto align-items-center">
-              <b-nav-item v-if="!account" :to="{name: 'Login'}" class="btn btn-secondary btn-sm ml-2">Log-In</b-nav-item>
-              <b-nav-text v-if="account">
-                <account-avatar :address="account.address"
-                  linkclass="avatar-xs"
-                  imgclass="rounded-circle" />
-                  <account-name :address="account.address" /></b-nav-text>
-              <b-nav-item v-if="account" :to="{name: 'Write'}" class="btn btn-primary btn-sm ml-2">Write</b-nav-item>
-              <b-nav-item v-if="account" @click="logout" class="btn btn-secondary btn-sm ml-2">Log-Out</b-nav-item>
-            </b-navbar-nav>
-          </b-collapse>
-        </b-navbar>
-      </b-container>
-    </div>
+    <b-navbar class="topnav navbar-expand-lg navbar-light bg-white" variant="light" fixed="top">
+      <div class="container">
+        <b-navbar-brand to="/"><strong>NULS Space</strong></b-navbar-brand>
+
+        <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+        <b-collapse is-nav id="nav_collapse">
+          <b-navbar-nav  class="ml-auto d-flex align-items-center">
+            <b-nav-item v-if="!account" :to="{name: 'Login'}" class="highlight"><i class="fas fa-sign-in-alt"></i> Log-In</b-nav-item>
+            <b-nav-text v-if="account">
+              <account-avatar :address="account.address"
+                linkclass="avatar-xs"
+                imgclass="rounded-circle" />
+                <account-name :address="account.address" /></b-nav-text>
+            <b-nav-item v-if="account" :to="{name: 'Write'}" class="highlight secondary ml-2"><i class="fas fa-pen-nib"></i> Write</b-nav-item>
+            <b-nav-item v-if="account" @click="logout" class="highlight ml-2"><i class="fas fa-sign-out-alt"></i> Log-Out</b-nav-item>
+          </b-navbar-nav>
+        </b-collapse>
+      </div>
+    </b-navbar>
     <router-view></router-view>
-    <hr />
-    <footer>
-      <b-container>
-        <b-row>
-          <b-col lg="8" md="10" class="mx-auto">
-            <p class="copyright text-muted mt-0">
-              NULS Space is a dApp based on the NULS blockchain and the <a href="https://nuls.world">NULS.World</a> API.
-            </p>
-            <p class="copyright text-muted mt-0">
-              Currently on
-              <span v-if="network_id===261">
-                Test-Net.
-                <b-link @click="set_network(8964, 'https://nuls.world')">Switch</b-link>
-              </span>
-              <span v-if="network_id===8964">
-                Main-Net.
-                <b-link @click="set_network(261, 'https://testnet.nuls.world')">Switch</b-link>
-              </span>
-            </p>
-          </b-col>
-        </b-row>
-      </b-container>
-    </footer>
+
+    <div class="container mt-5">
+    	<footer class="bg-white border-top p-3 text-muted small">
+    	<div class="d-flex justify-content-between">
+    		<div class="align-self-baseline">
+                <span class="navbar-brand mr-2"><strong>NULS Space</strong></span> is a dApp based on the NULS blockchain.
+    		</div>
+        <div class="align-self-baseline">
+          Currently on
+          <span v-if="network_id===261">
+            Test-Net.
+            <b-link @click="set_network(8964, 'https://nuls.world')" class="text-muted font-weight-bold">Switch</b-link>
+          </span>
+          <span v-if="network_id===8964">
+            Main-Net.
+            <b-link @click="set_network(261, 'https://testnet.nuls.world')" class="text-muted font-weight-bold">Switch</b-link>
+          </span>
+        </div>
+    		<div class="align-self-baseline">
+    			Made with the <a href="https://nuls.world" class="text-secondary font-weight-bold">NULS.World</a> API and <a target="_blank" class="text-secondary font-weight-bold" href="https://www.wowthemes.net/mundana-free-html-bootstrap-template/">Mundana Theme</a>.
+    		</div>
+    	</div>
+    	</footer>
+    </div>
   </div>
 </template>
 
@@ -159,14 +159,38 @@ export default {
 </script>
 
 <style lang="scss">
-@import 'assets/scss/_variables.scss';
-@import '~bootstrap/scss/bootstrap.scss';
-@import 'assets/scss/_variables.scss';
+@import 'assets/scss/main.scss';
 @import '~bootstrap-vue/dist/bootstrap-vue.css';
-@import 'assets/scss/clean-blog.scss';
 
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.nav.nav-tabs {
+  a.nav-link,
+  a.nav-link:hover,
+  a.nav-link.active {
+    border: 0;
+    background: none;
+    color: #6c757d;
+    padding: 0.2rem 0;
+    margin-right: 1.5rem;
+  }
+
+  a.nav-link:hover,
+  a.nav-link.active {
+    font-weight: 800;
+    color: inherit;
+    border-bottom: 1px solid #000;
+  }
+}
+
+.form-inherit.form-control {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font-size: inherit;
+  color: inherit;
 }
 </style>

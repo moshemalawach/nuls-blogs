@@ -1,29 +1,25 @@
 <template>
   <div>
-    <header class="masthead">
-      <div class="overlay"></div>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 col-md-10 mx-auto">
-            <div class="site-heading">
-              <h1>NULS Space</h1>
-              <span class="subheading">Your expression space, decentralized.</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
-          <posts :posts="displayed_posts"></posts>
-          <!-- Pager -->
+    <b-container>
+    	<div class="jumbotron jumbotron-fluid mb-3 pt-0 pb-0 bg-lightblue position-relative">
+    		<div class="pl-4 pr-0 h-100 tofront">
+    			<div class="row justify-content-between">
+    				<div class="col-md-6 pt-6 pb-6 align-self-center">
+    					<h1 class="secondfont mb-3 font-weight-bold">NULS Space is a decentralized expression space.</h1>
+    				</div>
+    				<div class="col-md-6 d-none d-md-block pr-0 jumbotron-img">	</div>
+    			</div>
+    		</div>
+    	</div>
+    </b-container>
+    <b-container>
+      <h5 class="font-weight-bold spanborder"><span>All Stories</span></h5>
+      <posts :posts="displayed_posts"></posts>
+      <!-- Pager -->
 
-          <b-pagination size="lg" :total-rows="total_posts" v-model="current_page" :per-page="per_page" v-if="total_posts > per_page">
-          </b-pagination>
-        </div>
-      </div>
-    </div>
+      <b-pagination size="lg" :total-rows="total_posts" v-model="current_page" :per-page="per_page" v-if="total_posts > per_page">
+      </b-pagination>
+    </b-container>
   </div>
 </template>
 
@@ -109,7 +105,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-header.masthead {
+.jumbotron-img {
+  background-size:cover;
   background-image: url('../assets/mast1.jpg');
 }
 .masthead .site-heading {

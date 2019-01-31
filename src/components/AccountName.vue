@@ -2,10 +2,13 @@
   <span>
     <router-link :to="target"
        v-if="(profiles[address]) && (profiles[address].name)"
+       :class="linkclass ? linkclass : ''"
        >{{profiles[address].name}}</router-link>
     <router-link :to="target"
+      :class="linkclass ? linkclass : ''"
        v-else-if="address_alias[address] !== undefined">@{{address_alias[address].alias}}</router-link>
     <router-link :to="target"
+      :class="linkclass ? linkclass : ''"
        v-else>{{address}}</router-link>
   </span>
 </template>
@@ -14,7 +17,7 @@
 import { mapState } from 'vuex'
 export default {
   name: 'account-name',
-  props: ['address'],
+  props: ['address', 'linkclass'],
   computed: mapState({
     account: state => state.account,
     profiles: state => state.profiles,

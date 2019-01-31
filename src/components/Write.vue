@@ -1,60 +1,80 @@
 <template>
   <div>
-    <header class="masthead" :style="banner_hash ? `background-image: url('https://ipfs.io/ipfs/${banner_hash}')` : ''">
-      <div class="overlay"></div>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 col-md-10 mx-auto">
-            <div class="post-heading">
-              <h1>
+    <div class="container">
+    	<div class="jumbotron jumbotron-fluid mb-3 pl-0 pt-0 pb-0 bg-white position-relative">
+    		<div class="h-100 tofront">
+    			<div class="row justify-content-between">
+    				<div class="col-md-6 pt-6 pb-6 pr-6 align-self-center">
+    					<!--<p class="text-uppercase font-weight-bold">
+    						<a class="text-danger" href="./category.html">Stories</a>
+    					</p>-->
+    					<h1 class="display-4 secondfont mb-3 font-weight-bold">
                 <b-form-textarea v-model="title"
-                  type="text"
-                  placeholder="Enter a title"
-                  :rows="Math.ceil(title.length/20)"
-                  required></b-form-textarea>
+                type="text"
+                placeholder="Enter a title"
+                class="form-inherit"
+                :rows="Math.ceil(title.length/15)"
+                required></b-form-textarea>
               </h1>
-              <h2 class="subheading">
-                <b-form-textarea v-model="subtitle"
-                  type="text"
-                  placeholder="subtitle (optional)"
-                  :rows="Math.ceil(subtitle.length/40)"></b-form-textarea></h2>
-              <span class="meta" v-if="txhash">Posted by
-                <account-name :address="account.address"></account-name>
-                {{moment.unix(transaction.time/1000).fromNow()}},
-                  updated now.</span>
-              <span class="meta" v-else>Posted by
-                <account-name :address="account.address"></account-name>
-                now</span>
+    					<p class="mb-3">
+                  <b-form-textarea v-model="subtitle"
+                    type="text"
+                    class="form-inherit"
+                    placeholder="subtitle (optional)"
+                    :rows="Math.ceil(subtitle.length/40)"></b-form-textarea>
+    					</p>
+    					<div class="d-flex align-items-center">
+                <account-avatar :address="account.address"
+                 linkclass="avatar-lg ml-2"
+                 imgclass="rounded-circle" />
+    						<small class="ml-2">
+                  <account-name :address="account.address" linkclass="text-dark"></account-name>
+                  <span class="text-muted d-block">
+                    {{moment.unix(transaction.time/1000).fromNow()}},
+                      updated now.
+                  </span>
+    						</small>
+    					</div>
+    				</div>
+    				<div class="col-md-6" :style="banner_hash ? `background-image: url('https://ipfs.io/ipfs/${banner_hash}'); background-size: cover; background-position: center center;   background-repeat: no-repeat;` : ''"
+                 v-if="post&&transaction">
 
-                <b-form-group
-                  id="banner"
-                  label="Banner Picture"
-                  label-for="banner_file"
-                  class="mt-4"
-                  >
-                  <b-input-group>
-                    <b-form-file v-model="banner_file"
-                    placeholder="Choose a file..." accept="image/jpeg, image/png, image/gif"
-                    plain @input="banner_upload"></b-form-file>
-                  </b-input-group>
-                  <b-form-text v-if="banner_hash">
-                     {{banner_hash}}
-                  </b-form-text>
-                </b-form-group>
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
-    <article>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 col-md-10 mx-auto mb-5">
+                 <b-form-group
+                   id="banner"
+                   label="Banner Picture"
+                   label-for="banner_file"
+                   class="bg-lightblue p-4 mt-4"
+                   >
+                   <b-input-group>
+                     <b-form-file v-model="banner_file"
+                     placeholder="Choose a file..." accept="image/jpeg, image/png, image/gif"
+                     plain @input="banner_upload"></b-form-file>
+                   </b-input-group>
+                   <b-form-text v-if="banner_hash">
+                      {{banner_hash}}
+                   </b-form-text>
+                 </b-form-group>
+    				</div>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+
+    <div class="container pt-4 pb-4">
+    	<div class="row justify-content-center">
+    		<div class="col-lg-2 pr-4 mb-4 col-md-12">
+    			<div class="sticky-top">
+    				Your article can be edited using the markdown syntax and previewed using the right tab.
+    			</div>
+    		</div>
+    		<div class="col-md-12 col-lg-8">
+    			<article class="article-post">
             <b-tabs>
               <b-tab title="Write" active>
                 <b-form-textarea id="textarea1"
                          v-model="body"
                          placeholder="Your post content"
+                         class="form-inherit mt-4"
                          :rows="10"
                          :max-rows="20"
                          required>
@@ -62,22 +82,21 @@
               </b-tab>
               <b-tab title="Preview">
                 <vue-markdown :source="body"
-                :html="false" />
+                :html="false" class="mt-4" />
               </b-tab>
             </b-tabs>
-            <hr />
-            <div class="clearfix">
-              <b-button :variant="(title&&body) ? 'success' : 'danger'" class="float-right" @click="submit" :disabled="(!(title&&body))||processing">
-                <div class="spinner-border text-light mr-3" role="status" v-if="processing">
-                  <span class="sr-only">Loading...</span>
-                </div>
-                Submit
-              </b-button>
-            </div>
+    			</article>
+          <div class="clearfix float-right">
+            <b-form-text>
+               Costs 0.001 <i class="nuls"></i>
+            </b-form-text>
+            <b-button :variant="(title&&body) ? 'success' : 'danger'" @click="submit" :disabled="(!(title&&body))||processing">
+              {{processing ? 'Please wait...' : 'Submit'}}
+            </b-button>
           </div>
-        </div>
-      </div>
-    </article>
+    		</div>
+    	</div>
+    </div>
   </div>
 </template>
 

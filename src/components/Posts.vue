@@ -1,27 +1,27 @@
 <template>
   <div class="post-list" ref="list">
-    <div v-for="post in posts"
+    <div class="mb-3 d-flex justify-content-between"
+         v-for="post in posts"
          v-if="post_amends[post.hash] ? post_amends[post.hash].content.title : post.content.title"
          v-bind:post="post"
          :key="post.hash + last_broadcast + Object.keys(profiles).length + Object.keys(post_amends).length">
-      <div class="post-preview">
-        <router-link :to="{ name: 'StoryRead', params: {txhash: post.hash} }">
-          <h2 class="post-title">
-            {{post_amends[post.hash] ? post_amends[post.hash].content.title : post.content.title}}
-          </h2>
-          <h3 class="post-subtitle" v-if="post_amends[post.hash] ? post_amends[post.hash].content.subtitle : post.content.subtitle">
-            {{post_amends[post.hash] ? post_amends[post.hash].content.subtitle : post.content.subtitle}}
-          </h3>
-        </router-link>
-        <p class="post-meta">Posted by
+			<div class="pr-3">
+				<h2 class="mb-1 h4 font-weight-bold">
+				      <router-link :to="{ name: 'StoryRead', params: {txhash: post.hash} }" class="text-dark">{{post_amends[post.hash] ? post_amends[post.hash].content.title : post.content.title}}</router-link>
+				</h2>
+				<p>
+					{{post_amends[post.hash] ? post_amends[post.hash].content.subtitle : post.content.subtitle}}
+				</p>
+				<div class="card-text text-muted small">
           <account-avatar :address="post.address"
-            linkclass="avatar-xs"
+            linkclass="avatar-xs text-muted"
             imgclass="rounded-circle" />
-          <account-name :address="post.address"></account-name>
-          {{moment.unix(post.time/1000).fromNow()}}</p>
-      </div>
-      <hr />
-    </div>
+          <account-name :address="post.address" linkclass="text-muted"></account-name>,
+  				{{moment.unix(post.time/1000).fromNow()}}
+				</div>
+			</div>
+      <div :style="`background-image: url('https://ipfs.io/ipfs/${post.content.banner}'); width: 200px;    background-size: cover; background-position: center center;   background-repeat: no-repeat;`" v-if="post.content.banner"></div>
+		</div>
   </div>
 </template>
 
