@@ -46,8 +46,8 @@
             </b-button>
             <vue-markdown :source="post.content.body"
             :html="false" />
-            <hr>
-            <div v-if="comments">
+            <hr v-if="comments.length">
+            <div v-if="comments.length">
               <h4 class="my-5">{{comments.length}} thoughts on "{{post.content.title}}"</h4>
               <div v-for="comment in comments"
                    :key="post.hash + Object.keys(profiles).length">
@@ -68,6 +68,31 @@
               </div>
             </div>
 
+            <hr v-if="(account!==null) && (!comments.length)">
+            <div class="d-md-flex justify-content-between" v-if="account!==null">
+              <div class="flex-shrink-1">
+                <!-- Avatar -->
+                <account-avatar :address="account.address" imgclass="rounded-circle"></account-avatar>
+              </div>
+              <div class="flex-grow-1 ml-4">
+                <p class="my-0 text-muted float-right">Just now</p>
+                <h5><account-name :address="account.address"></account-name> says</h5>
+                <b-form-textarea class="form-control" v-model="quick_post_body" placeholder="Leave a comment" rows="2"></b-form-textarea>
+              </div>
+            </div>
+            <div class="row align-items-center justify-content-between mt-2" v-if="quick_post_body">
+              <div class="col-auto">
+                <!-- more controls here like upload picture and things like that -->
+              </div>
+              <div class="col-auto">
+                <b-button variant="primary" size="sm" @click="quick_post" :disabled="posting">
+                  <div class="spinner-border text-light mr-3" role="status" v-if="posting">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                  Comment
+                </b-button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -82,6 +107,7 @@ import moment from 'moment'
 import AccountAvatar from './AccountAvatar.vue'
 import AccountName from './AccountName.vue'
 import {fetch_profile} from 'nulsworldjs/src/api/aggregates'
+import {create_post, broadcast} from 'nulsworldjs/src/api/create'
 import { mapState } from 'vuex'
 import VueMarkdown from 'vue-markdown'
 
@@ -95,7 +121,9 @@ import bus from '../bus.js'
         transaction: null,
         amends: [],
         moment: moment,
-        comments: []
+        comments: [],
+        quick_post_body: '',
+        posting: false
       }
     },
     props: ['txhash'],
@@ -196,6 +224,30 @@ import bus from '../bus.js'
         }
         console.log(3)
         loader.hide()
+      },
+      async quick_post() {
+        this.posting = true
+        let tx = await create_post(
+          this.account.address, 'comment',
+          this.quick_post_body, {
+            ref: this.transaction.hash,
+            api_server: this.api_server
+          }
+        )
+        // this.$store.commit('sign_tx', {
+        //   'tx': tx,
+        //   'reason': 'New comment on tx ' + this.post.hash
+        // })
+        tx.sign(Buffer.from(this.account.private_key, 'hex'))
+        let signed_tx = tx.serialize().toString('hex')
+        let tx_hash = await broadcast(signed_tx, {api_server: this.api_server})
+        function sleep(ms) {
+          return new Promise(resolve => setTimeout(resolve, ms));
+        }
+        await sleep(10000)
+        await this.getComments()
+        this.quick_post_body = ''
+        this.posting = false
       }
     },
     watch: {
