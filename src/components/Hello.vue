@@ -18,9 +18,9 @@
         <div class="col-lg-8 col-md-10 mx-auto">
           <posts :posts="displayed_posts"></posts>
           <!-- Pager -->
-          <div class="clearfix">
-            <a class="btn btn-primary float-right" href="#">Older Posts →</a>
-          </div>
+
+          <b-pagination size="lg" :total-rows="total_posts" v-model="current_page" :per-page="per_page" v-if="total_posts > per_page">
+          </b-pagination>
         </div>
       </div>
     </div>
@@ -43,7 +43,10 @@ export default {
     return {
       displayed_posts: [],
       account_profiles: {},
-      moment: moment
+      moment: moment,
+      per_page: 20,
+      total_posts: 0,
+      current_page: 1
     }
   },
   components: {
@@ -62,6 +65,9 @@ export default {
     },
     async api_server() {
       await this.update()
+    },
+    async current_page() {
+      await this.update_posts()
     }
   },
   methods: {
@@ -69,10 +75,20 @@ export default {
       await this.update_posts()
     },
     async update_posts() {
-      let response = await axios.get(`${this.api_server}/ipfs/posts.json?types=blog_pers,blog_org,own_feed,other_feed&pagination=200`)
+      let response = await axios.get(`${this.api_server}/ipfs/posts.json`, {
+        params: {
+          'types': 'blog_pers,blog_org',
+          'pagination': this.per_page,
+          'page': this.current_page
+        }
+      })
+
+      console.log(response.data)
       let posts = response.data.posts // display all for now
       //await this.update_comments(posts);
       this.displayed_posts = response.data.posts // display all for now
+      this.total_posts = response.data.pagination_total
+      this.current_page = response.data.pagination_page
     },
     async quick_post() {
       let tx = await create_post(

@@ -24,6 +24,8 @@
         <b-tabs>
           <b-tab title="Posts" active v-if="displayed_posts.length">
             <posts :posts="displayed_posts"></posts>
+            <b-pagination size="lg" :total-rows="total_posts" v-model="current_page" :per-page="per_page" v-if="total_posts > per_page">
+            </b-pagination>
           </b-tab>
           <!-- <b-tab title="Comments">
           </b-tab> -->
@@ -49,7 +51,10 @@ import bus from '../bus.js'
     data() {
       return {
         profile: {},
-        displayed_posts: []
+        displayed_posts: [],
+        per_page: 5,
+        total_posts: 0,
+        current_page: 1
       }
     },
     computed: mapState({
@@ -99,13 +104,15 @@ import bus from '../bus.js'
           params: {
             'types': 'blog_pers',
             'addresses': this.address,
-            'pagination': 200
+            'pagination': this.per_page,
+            'page': this.current_page
           }
         })
         let posts = response.data.posts
-        posts.sort((a, b) => (b.time-a.time))
 
         this.displayed_posts = posts // display all for now
+        this.total_posts = response.data.pagination_total
+        this.current_page = response.data.pagination_page
       },
       async refresh() {
         await this.getProfile()
@@ -115,6 +122,9 @@ import bus from '../bus.js'
     watch: {
       async $route(to, from) {
         await this.getProfile()
+        await this.getPosts()
+      },
+      async current_page() {
         await this.getPosts()
       }
     },
