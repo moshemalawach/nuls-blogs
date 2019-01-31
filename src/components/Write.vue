@@ -39,9 +39,7 @@
     						</small>
     					</div>
     				</div>
-    				<div class="col-md-6" :style="banner_hash ? `background-image: url('https://ipfs.io/ipfs/${banner_hash}'); background-size: cover; background-position: center center;   background-repeat: no-repeat;` : ''"
-                 v-if="post&&transaction">
-
+    				<div class="col-md-6" :style="banner_hash ? `background-image: url('https://ipfs.io/ipfs/${banner_hash}'); background-size: cover; background-position: center center;   background-repeat: no-repeat;` : ''">
                  <b-form-group
                    id="banner"
                    label="Banner Picture"
