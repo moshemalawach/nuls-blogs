@@ -2,11 +2,6 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
-        <b-button class="float-right mt-5"
-        :to="{name: 'EditProfile', params: {address: address}}"
-        v-if="account && (account.address === address)">
-          Edit
-        </b-button>
         <div class="my-5 d-md-flex justify-content-between">
           <div class="flex-shrink-1 order-1 col-md-4 col-lg-3 align-self-center">
             <account-avatar :address="address"
@@ -14,9 +9,14 @@
               imgclass="rounded-circle" />
           </div>
           <div class="flex-grow-1 order-0 mt-4 align-self-center">
+            <b-button class="float-right mt-5"
+            :to="{name: 'EditProfile', params: {address: address}}"
+            v-if="account && (account.address === address)">
+              Edit
+            </b-button>
             <h1 v-if="profile.name">{{profile.name}}</h1>
             <h1 v-else-if="alias">@{{alias}}</h1>
-            <h1 v-else>{{address}}</h1>
+            <h1 v-else class="text-truncate">{{address}}</h1>
             <p v-if="profile.bio">{{profile.bio}}</p>
             <p v-else>Account with the address {{address}}</p>
           </div>
