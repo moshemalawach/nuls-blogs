@@ -237,7 +237,7 @@ import router from '../router'
         function sleep(ms) {
           return new Promise(resolve => setTimeout(resolve, ms));
         }
-        await sleep(10000)
+        await sleep(14000)
         this.processing = false
 
         if (this.txhash)
@@ -259,10 +259,6 @@ import router from '../router'
     },
     async created() {
       await this.refresh()
-      bus.$on('broadcasted', () => {
-        setTimeout(this.refresh, 5000);
-        setTimeout(this.refresh, 10000);
-      })
     }
   }
 </script>

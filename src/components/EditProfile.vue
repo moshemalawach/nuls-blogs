@@ -154,7 +154,7 @@ export default {
       function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
       }
-      await sleep(10000)
+      await sleep(14000)
       this.processing = false
       if (this.alias)
         router.push({ name: "Profile", params: {alias: this.alias} })

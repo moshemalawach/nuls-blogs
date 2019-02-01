@@ -253,7 +253,7 @@ import bus from '../bus.js'
         function sleep(ms) {
           return new Promise(resolve => setTimeout(resolve, ms));
         }
-        await sleep(10000)
+        await sleep(14000)
         await this.getComments()
         this.quick_post_body = ''
         this.posting = false
