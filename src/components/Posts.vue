@@ -20,7 +20,7 @@
   				{{moment.unix(post.time/1000).fromNow()}}
 				</div>
 			</div>
-      <div :style="`background-image: url('https://ipfs.io/ipfs/${post.content.banner}'); width: 200px;    background-size: cover; background-position: center center;   background-repeat: no-repeat;`" v-if="post.content.banner"></div>
+      <div :style="`background-image: url('${ipfs_gateway}${post.content.banner}'); width: 200px;    background-size: cover; background-position: center center;   background-repeat: no-repeat;`" v-if="post.content.banner"></div>
 		</div>
   </div>
 </template>
@@ -41,6 +41,7 @@ export default {
     account: state => state.account,
     last_broadcast: state => state.last_broadcast,
     profiles: state => state.profiles,
+    ipfs_gateway: state => state.ipfs_gateway,
     api_server: state => state.api_server
   }),
   watch: {

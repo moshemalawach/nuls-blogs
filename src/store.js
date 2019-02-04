@@ -14,6 +14,7 @@ export default new Vuex.Store({
   state: {
     api_server: 'https://nuls.world',
     network_id: 8964,
+    ipfs_gateway: 'https://ipfs.io/ipfs/',
     account: null,
     profiles: {},
     address_alias: {},

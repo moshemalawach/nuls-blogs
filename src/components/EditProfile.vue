@@ -6,7 +6,7 @@
             <div class="my-5 d-md-flex justify-content-between">
               <div class="flex-shrink-1 order-1 col-md-4 col-lg-3 align-self-top text-right">
                 <a class="avatar avatar-xxl">
-                    <img :src="'https://ipfs.io/ipfs/' + ppic_hash" alt="..." class="avatar-img rounded-circle"
+                    <img :src="ipfs_gateway + ppic_hash" alt="..." class="avatar-img rounded-circle"
                          v-if="ppic_hash">
                 </a>
               </div>
@@ -89,6 +89,7 @@ export default {
     account: state => state.account,
     api_server: state => state.api_server,
     last_broadcast: state => state.last_broadcast,
+    ipfs_gateway: state => state.ipfs_gateway,
     alias(state) {
       let address = this.$route.params.address
       let alias = null

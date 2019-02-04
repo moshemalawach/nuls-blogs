@@ -49,7 +49,7 @@
     						</small>
     					</div>
     				</div>
-    				<div class="col-md-6" :style="banner_hash ? `background-image: url('https://ipfs.io/ipfs/${banner_hash}'); background-size: cover; background-position: center center;   background-repeat: no-repeat;` : ''">
+    				<div class="col-md-6" :style="banner_hash ? `background-image: url('${ipfs_gateway}${banner_hash}'); background-size: cover; background-position: center center;   background-repeat: no-repeat;` : ''">
                  <b-form-group
                    id="banner"
                    label="Banner Picture"
@@ -154,6 +154,7 @@ import router from '../router'
       account: state => state.account,
       api_server: state => state.api_server,
       last_broadcast: state => state.last_broadcast,
+      ipfs_gateway: state => state.ipfs_gateway,
       post(state) {
         let post = null
         if (this.transaction&&this.transaction.info&&this.transaction.info.post) {

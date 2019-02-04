@@ -27,7 +27,7 @@
     						</small>
     					</div>
     				</div>
-    				<div class="col-md-6 pr-0" :style="post.content.banner ? `background-image: url('https://ipfs.io/ipfs/${post.content.banner}'); background-size: cover; background-position: center center;   background-repeat: no-repeat;` : ''"
+    				<div class="col-md-6 pr-0" :style="post.content.banner ? `background-image: url('${ipfs_gateway}${post.content.banner}'); background-size: cover; background-position: center center;   background-repeat: no-repeat;` : ''"
                  v-if="post&&transaction">
     				</div>
     			</div>
@@ -150,6 +150,7 @@ import bus from '../bus.js'
       profiles: state => state.profiles,
       api_server: state => state.api_server,
       last_broadcast: state => state.last_broadcast,
+      ipfs_gateway: state => state.ipfs_gateway,
       post(state) {
         let post = null
         if (this.transaction&&this.transaction.info&&this.transaction.info.post) {
