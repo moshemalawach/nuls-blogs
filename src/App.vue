@@ -20,6 +20,10 @@
 
         <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
         <b-collapse is-nav id="nav_collapse">
+          <b-navbar-nav  class="mr-auto d-flex align-items-center">
+            <b-nav-item v-for="category_tag of categories"
+                        :to="{name: 'TagDetail', params: {tag: category_tag}}">{{category_tag}}</b-nav-item>
+          </b-navbar-nav>
           <b-navbar-nav  class="ml-auto d-flex align-items-center">
             <b-nav-item v-if="!account" :to="{name: 'Login'}" class="highlight"><i class="fas fa-sign-in-alt"></i> Log-In</b-nav-item>
             <b-nav-text v-if="account">
@@ -101,6 +105,7 @@ export default {
     signReason: state => state.signReason,
     api_server: state => state.api_server,
     network_id: state => state.network_id,
+    categories: state => state.categories,
 
   }),
   watch: {

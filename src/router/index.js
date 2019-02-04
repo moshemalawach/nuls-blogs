@@ -6,6 +6,7 @@ import Profile from '@/components/Profile'
 import EditProfile from '@/components/EditProfile'
 import Write from '@/components/Write'
 import Login from '@/components/Login'
+import TagDetail from '@/components/TagDetail'
 // import Organization from '@/components/Organization'
 
 Vue.use(Router)
@@ -49,6 +50,12 @@ export default new Router({
       path: '/s/:txhash/amend',
       name: 'StoryAmend',
       component: Write,
+      props: true
+    },
+    {
+      path: '/t/:tag',
+      name: 'TagDetail',
+      component: TagDetail,
       props: true
     },
     {

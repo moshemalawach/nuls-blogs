@@ -6,7 +6,7 @@
     			<div class="row justify-content-between">
     				<div class="col-md-6 pt-6 pb-6 pr-6 align-self-center">
     					<p class="text-uppercase font-weight-bold" v-if="post.content.tags">
-    						<a class="text-danger" hreaf="#" v-for="tag of post.content.tags">{{tag}}</a>
+    						<b-link class="text-danger" :to="{name: 'TagDetail', params: {tag: tag}}" v-for="tag of post.content.tags">{{tag}}</b-link>
     					</p>
     					<h1 class="display-4 secondfont mb-3 font-weight-bold">{{post.content.title||"Untitled"}}</h1>
     					<p class="mb-3">
