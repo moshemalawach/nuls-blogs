@@ -8,6 +8,16 @@
     					<!--<p class="text-uppercase font-weight-bold">
     						<a class="text-danger" href="./category.html">Stories</a>
     					</p>-->
+              <p class="text-uppercase font-weight-bold">
+                <vue-tags-input
+                  v-model="tag"
+                  :tags="tags"
+                  placeholder="Set categories"
+                  :autocomplete-items="filteredItems"
+                  :disabled="transaction"
+                  @tags-changed="newTags => tags = newTags"
+                />
+              </p>
     					<h1 class="display-4 secondfont mb-3 font-weight-bold">
                 <b-form-textarea v-model="title"
                 type="text"
@@ -110,6 +120,7 @@ import {fetch_profile} from 'nulsworldjs/src/api/aggregates'
 import {create_post, ipfs_push_file, broadcast} from 'nulsworldjs/src/api/create'
 import { mapState } from 'vuex'
 import VueMarkdown from 'vue-markdown'
+import VueTagsInput from '@johmun/vue-tags-input';
 
 import bus from '../bus.js'
 import router from '../router'
@@ -126,12 +137,20 @@ import router from '../router'
         title: '',
         subtitle: '',
         body: '',
+        tag: '',
+        tags: [],
         moment: moment,
         processing: false
       }
     },
     props: ['txhash'],
-    computed: mapState({
+    computed: {
+      filteredItems() {
+        return this.autocompleteitems.filter((i) => {
+          return i.text.toLowerCase().indexOf(this.tag.toLowerCase()) !== -1;
+        });
+      },
+      ... mapState({
       account: state => state.account,
       api_server: state => state.api_server,
       last_broadcast: state => state.last_broadcast,
@@ -148,12 +167,16 @@ import router from '../router'
           post.content = post_content
         }
         return post
+      },
+      autocompleteitems(state) {
+        return state.categories.map((c) => {return {text:c}})
       }
-    }),
+    })},
     components: {
       AccountAvatar,
       AccountName,
-      VueMarkdown
+      VueMarkdown,
+      VueTagsInput
     },
     methods: {
       async getTransaction() {
@@ -189,11 +212,16 @@ import router from '../router'
           this.title = this.post.content.title
           this.subtitle = this.post.content.subtitle
           this.body = this.post.content.body
+          if (this.post.tags !== undefined)
+            this.tags = this.post.tags.map((t) => {text: t})
+          else
+            this.tags = []
         } else {
           this.banner_hash = null
           this.title = ''
           this.subtitle = ''
           this.body = ''
+          this.tags = []
         }
       },
       async refresh() {
@@ -218,7 +246,8 @@ import router from '../router'
             {title: this.title, ref: this.transaction.hash,
              misc_content: {
                subtitle: this.subtitle,
-               banner: this.banner_hash
+               banner: this.banner_hash,
+               tags: this.tags.map(t => t.text)
              }, api_server: this.api_server})
         else
           tx = await create_post(
@@ -226,7 +255,8 @@ import router from '../router'
             {title: this.title,
              misc_content: {
                subtitle: this.subtitle,
-               banner: this.banner_hash
+               banner: this.banner_hash,
+               tags: this.tags.map(t => t.text)
              }, api_server: this.api_server})
 
         tx.sign(Buffer.from(this.account.private_key, 'hex'))
