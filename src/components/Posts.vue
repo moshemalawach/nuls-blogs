@@ -80,7 +80,6 @@ export default {
     async update_amends() {
       let post_amends = {}
       const hashes = this.posts.map(x => x.hash);
-      console.log(hashes)
       let response = await axios.get(`${this.api_server}/ipfs/posts.json`, {
         params: {
           'types': 'amend',

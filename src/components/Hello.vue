@@ -76,7 +76,6 @@ export default {
         }
       })
 
-      console.log(response.data)
       let posts = response.data.posts // display all for now
       //await this.update_comments(posts);
       this.displayed_posts = response.data.posts // display all for now
