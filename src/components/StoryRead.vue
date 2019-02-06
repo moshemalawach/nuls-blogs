@@ -6,7 +6,7 @@
     			<div class="row justify-content-between">
     				<div class="col-md-6 pt-6 pb-6 pr-6 align-self-center">
     					<p class="text-uppercase font-weight-bold" v-if="post.content.tags">
-    						<b-link class="text-danger" :to="{name: 'TagDetail', params: {tag: tag}}" v-for="tag of post.content.tags">{{tag}}</b-link>
+    						<b-link class="text-danger mr-2" :to="{name: 'TagDetail', params: {tag: tag}}" v-for="tag of post.content.tags">{{tag}}</b-link>
     					</p>
     					<h1 class="display-4 secondfont mb-3 font-weight-bold">{{post.content.title||"Untitled"}}</h1>
     					<p class="mb-3">
@@ -162,6 +162,13 @@ import bus from '../bus.js'
             Object.assign(post_content, amend.content)
           }
           post.content = post_content
+        }
+        return post
+      },
+      original_post(state) {
+        let post = null
+        if (this.transaction&&this.transaction.info&&this.transaction.info.post) {
+          post = Object.assign({}, this.transaction.info.post)
         }
         return post
       },

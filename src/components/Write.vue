@@ -13,8 +13,8 @@
                   v-model="tag"
                   :tags="tags"
                   placeholder="Set categories"
+                  :add-on-key="[13, ',', ';']"
                   :autocomplete-items="filteredItems"
-                  :disabled="transaction"
                   @tags-changed="newTags => tags = newTags"
                 />
               </p>
@@ -213,8 +213,8 @@ import router from '../router'
           this.title = this.post.content.title
           this.subtitle = this.post.content.subtitle
           this.body = this.post.content.body
-          if (this.post.tags !== undefined)
-            this.tags = this.post.tags.map((t) => {text: t})
+          if (this.post.content.tags !== undefined)
+            this.tags = this.post.content.tags.map((t) => {return {text: t}})
           else
             this.tags = []
         } else {
