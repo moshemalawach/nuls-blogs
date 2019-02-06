@@ -16,7 +16,9 @@
     </b-modal>
     <b-navbar class="topnav navbar-expand-lg navbar-light bg-white" variant="light" fixed="top">
       <div class="container">
-        <b-navbar-brand to="/"><strong>NULS Space</strong></b-navbar-brand>
+        <b-navbar-brand to="/"><strong>NULS Space</strong>
+          <sup><b-badge pill variant="secondary">Beta</b-badge></sup>
+          </b-navbar-brand>
 
         <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
         <b-collapse is-nav id="nav_collapse">
