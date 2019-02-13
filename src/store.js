@@ -28,7 +28,8 @@ export default new Vuex.Store({
       'Crypto',
       'NULS',
       'Tech',
-      'Design'
+      'Design',
+      '214'
     ]
   },
   mutations: {
