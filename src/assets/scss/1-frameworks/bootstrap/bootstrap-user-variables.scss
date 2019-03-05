@@ -271,8 +271,8 @@ $spacers: () !default;
 // // Font, line-height, and color for body text, headings, and more.
 //
 // // stylelint-disable value-keyword-case
-   $font-family-sans-serif:      "Roboto", "Segoe UI", "Helvetica Neue", "Arial" !default;
-   $font-secondary:              "EB Garamond", "Segoe UI", "Helvetica Neue", "Arial" !default;
+   $font-family-sans-serif:      "Source Sans Pro", "Segoe UI", "Helvetica Neue", "Arial" !default;
+   $font-secondary:              "Playfair Display", "Segoe UI", "Helvetica Neue", "Arial" !default;
 // $font-family-monospace:       SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
 // $font-family-base:            $font-family-sans-serif !default;
 // // stylelint-enable value-keyword-case
@@ -298,7 +298,7 @@ $spacers: () !default;
 //
 // $headings-margin-bottom:      ($spacer / 2) !default;
    $headings-font-family:        inherit !default;
-   $headings-font-weight:        500 !default;
+   $headings-font-weight:        600 !default;
    $headings-line-height:        1.2 !default;
 // $headings-color:              inherit !default;
 //
