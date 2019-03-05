@@ -43,7 +43,7 @@
     		</div>
     		<div class="col-md-12 col-lg-8">
     			<article class="article-post">
-            <b-button class="float-right"
+            <b-button class="float-right" style="z-index: 5;"
             :to="{name: 'StoryAmend', params: {txhash: transaction.hash}}"
             v-if="account && (account.address === address)">
               Edit
